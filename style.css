@@ -1,0 +1,18 @@
+body {
+  padding: 8px;
+}
+
+section {
+  border: 1px solid black;
+  min-height: 700px;
+  margin: 8px;
+  padding: 8px;
+}
+
+header, footer, h1, h2 {
+  text-align: center;
+}
+
+.hide {
+  display: none;
+}
