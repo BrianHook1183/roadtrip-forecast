@@ -2,14 +2,14 @@
 let apiKeyCC = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
 
 
-
+// test endpoint variables
 const startTime = 'now';
 const endTime = ''; // 2020-08-14
-
+// chicago
 const lat = '41.881832';
 const lon = '-87.623177';
 
-// ClimaCell test endpoint
+// test ClimaCell endpoint
 const ccTestUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyCC}&lat=${lat}&lon=${lon}&unit_system=us&start_time=${startTime}&end_time=${endTime}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
 
 
