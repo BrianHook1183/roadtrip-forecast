@@ -1,9 +1,16 @@
 // ClimaCell api key
 let apiKeyCC = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
 
-// ClimaCell test endpoint
-const ccTestUrl = 'https://api.climacell.co/v3/weather/forecast/daily?apikey=MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr&lat=41.881832&lon=-87.623177&unit_system=us&start_time=now&fields=precipitation,feels_like,precipitation_probability';
 
+
+const startTime = 'now';
+const endTime = ''; // 2020-08-14
+
+const lat = '41.881832';
+const lon = '-87.623177';
+
+// ClimaCell test endpoint
+const ccTestUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyCC}&lat=${lat}&lon=${lon}&unit_system=us&start_time=${startTime}&end_time=${endTime}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
 
 
 
@@ -26,7 +33,12 @@ function runApp(){
 function displayResults(responseJson) {
   console.log('displayResults ran');
   console.log(responseJson);
-  $('.js-results').removeClass('hide').text('the date of the returned 14 day forecast begins on: ' + responseJson[0].observation_time.value + ' and the chance of rain is: ' + responseJson[0].precipitation_probability.value +  responseJson[0].precipitation_probability.units);
+  for (i=0; i < responseJson?.length; i++) {
+    if (!responseJson[i]){
+      continue;
+    }
+  $('.js-results').removeClass('hide').append('<p>On ' + responseJson[i].observation_time.value + ' it will be ' + responseJson[i].weather_code.value + ' with a ' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation.</p>');
+  }
 }
 
 
