@@ -16,3 +16,14 @@ header, footer, h1, h2 {
 .hide {
   display: none;
 }
+
+/* form */
+form {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 3px;
+}
+label {
+  font-weight: bold;
+}

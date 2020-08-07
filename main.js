@@ -1,37 +1,70 @@
 // ClimaCell api key
-let apiKeyCC = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
+const apiKeyClima = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
 
 
-// test endpoint variables
-const startTime = 'now';
-const endTime = ''; // 2020-08-14
-// chicago
-const lat = '41.881832';
-const lon = '-87.623177';
-
-// test ClimaCell endpoint
-const ccTestUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyCC}&lat=${lat}&lon=${lon}&unit_system=us&start_time=${startTime}&end_time=${endTime}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
+// OpenCgeData api key
+const apiKeyCage = 'a4e6cc64bbe749ca8ec7aed6282a3091';
+//  openCagedata URL variables
+let cageCity;
+let cageState;
 
 
 
 
 
-
-
-function runApp(){
-  console.log('runApp was initialized');
-  $('.js-fetch').click(e => {
+function handleForwardGeocoding() {
+  // console.log('handleForwardGeocoding ran');
+  $('#js-submit').click(e => {
     e.preventDefault();
-    console.log('fetch was clicked');
-
-    fetch(ccTestUrl)
+    // console.log('submit was clicked');
+    const cageCity = $('#js-city').val();
+    const cageCityEncoded = encodeURIComponent(cageCity);
+    const cageState = $('#js-state').val();
+    const cageStateEncoded = encodeURIComponent(cageState);
+    console.log('city is ' + cageCity + ' and state is ' + cageState)
+    // test OpenCageData endpoint
+    const cageTestUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}%2C%20${cageStateEncoded}&countrycode=us`;
+    console.log('the fetched url will be: ' + cageTestUrl);
+    fetch(cageTestUrl)
     .then(response => response.json())
-    .then(responseJson => displayResults(responseJson));
+    .then(responseJson => setCoordinates(responseJson));
   })
 }
 
-function displayResults(responseJson) {
-  console.log('displayResults ran');
+function setCoordinates(responseJson) {
+  // console.log(responseJson);
+  //  limit=1 in endpoint ensures that [0] is the only "results" to access
+  const cageDescription = responseJson.results[0].formatted;
+  const cageLat = responseJson.results[0].geometry.lat;
+  const cageLng = responseJson.results[0].geometry.lng;
+  // console.log(cageLat + ', ' + cageLng);
+  $('#js-geocoding-output').html('openCage API returned ' + cageDescription + ' with the coordinates ' + cageLat + ', ' + cageLng);
+  fetchForecast(cageLat, cageLng)
+}
+
+function fetchForecast(cageLat, cageLng){
+  // console.log('fetchForecast was initialized');
+  $('#js-fetch').click(e => {
+    e.preventDefault();
+    // console.log('fetch was clicked');
+    
+    // test endpoint variables
+    const startTime = 'now';
+    const endTime = '2020-08-08'; // 2020-08-14
+    // changeover from openCage to Climacell
+    const cclat = cageLat;
+    const cclon = cageLng;
+    // test ClimaCell endpoint
+    const ccTestUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${cclat}&lon=${cclon}&unit_system=us&start_time=${startTime}&end_time=${endTime}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
+    console.log('the url to be fetched is: ' + ccTestUrl);
+    fetch(ccTestUrl)
+    .then(response => response.json())
+    .then(responseJson => displayForecast(responseJson));
+  })
+}
+
+function displayForecast(responseJson) {
+  // console.log('displayForecast ran');
   console.log(responseJson);
   for (i=0; i < responseJson?.length; i++) {
     if (!responseJson[i]){
@@ -42,4 +75,4 @@ function displayResults(responseJson) {
 }
 
 
-$(runApp);
+$(handleForwardGeocoding);

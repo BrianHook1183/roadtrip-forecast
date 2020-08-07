@@ -10,14 +10,25 @@
 	</head>
 	<body>
 		<header>
-			<h1>Road Trip Forecast / Planner</h1>
-			<nav></nav>
+      <!-- Specified US because openCage is locked to US at the moment, can add country codes to expand to canada etc... -->
+			<h1>US Road Trip Forecast / Planner</h1>
+			<nav><p><a href="https://brianhook1183.github.io/roadtrip-forecast/" target="blank">Deployed GitHub Page</a></p></nav>
 		</header>
 		<main>
 			<section>
         <h2>Dev Area</h2>
-        <button class="js-fetch">test fetch</button>
-        <div class="js-results hide"></div>
+        <form>
+          <label>City:<input type="text" id="js-city" value="Santa Fe">
+          </label><br>
+          <label>State:<input type="text" id="js-state" value="New Mexico">
+          </label><br>
+          <input id="js-submit" type="submit" value="Get Coordinates">
+        </form>
+        <p><strong>Submitted Location output:</strong></p>
+        <p id="js-geocoding-output"></p>
+        <hr>
+        <button id="js-fetch">Get forecast</button>
+        <p class="js-results hide"></p>
       </section>
       <section>
         <h2>Start</h2>
