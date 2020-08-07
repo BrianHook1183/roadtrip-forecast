@@ -8,9 +8,6 @@ let itinerary = [];
 
 
 
-
-
-
 function handleForm() {
   $('#js-submit').click(e => {
     e.preventDefault();
@@ -20,7 +17,7 @@ function handleForm() {
     const cageState = $('#js-state').val();
     const cageStateEncoded = encodeURIComponent(cageState);
     const startDate = $('#js-date').val();
-    console.log('city is ' + cageCity + ' and state is ' + cageState + ' and the arrival date is ' + startDate);
+      console.log('city is ' + cageCity + ' and state is ' + cageState + ' and the arrival date is ' + startDate);
     
     const locationObject = 
     {
@@ -31,8 +28,8 @@ function handleForm() {
       'itDate': startDate
     };
     itinerary.push(locationObject);
-    console.log('itinerary before geocoding is:');
-    console.log(itinerary);
+      console.log('itinerary before geocoding is:');
+      console.log(itinerary);
 
     clearForm();
     handleForwardGeocoding(cageCityEncoded, cageStateEncoded);
@@ -46,14 +43,15 @@ function clearForm() {
 }
 
 function handleForwardGeocoding(cageCityEncoded, cageStateEncoded) {
-  console.log('handleForwardGeocoding ran');
+    console.log('handleForwardGeocoding ran');
   // test OpenCageData endpoint
   const cageTestUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}%2C%20${cageStateEncoded}&countrycode=us`;
-  console.log('the fetched url will be: ' + cageTestUrl);
+    console.log('the fetched url will be: ' + cageTestUrl);
   fetch(cageTestUrl)
   .then(response => response.json())
   .then(responseJson => setCoordinates(responseJson));
 }
+
 function setCoordinates(responseJson) {
   // console.log(responseJson);
   //  limit=1 in endpoint ensures that [0] is the only "results" to access
@@ -65,32 +63,26 @@ function setCoordinates(responseJson) {
   // push geocoded coordinates into location object
   //  the variable z is only temporary until i put this all into a loop
   const z = itinerary.length-1;
+  itinerary[z].itDesc= cageDescription;
   itinerary[z].itLat= cageLat;
   itinerary[z].itLng= cageLng;
     console.log(itinerary);
-
-  // Temporarily gives feedback on adding item to itinerary to give feedback that your location is correct
-  $('#js-geocoding-output').html('Make sure your intended location was: ' + cageDescription);
-  // fetchForecast(cageLat, cageLng)
+  $('.js-itinerary').append(`
+  <div class="itinerary-object">  
+  <h3>${itinerary[z].itCity}</h3>
+    <ul>
+      <li>Arrival Date: <strong>${itinerary[z].itDate}</strong></li>
+      <li>${itinerary[z].itDesc}</li>
+      <li>Coordinates= ${itinerary[z].itLat}, ${itinerary[z].itLng}</li>
+    </ul>
+  </div>
+  `);
 }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-function fetchForecast(cageLat, cageLng){
+function fetchForecast(){
   // console.log('fetchForecast was initialized');
   $('#js-fetch').click(e => {
     e.preventDefault();
@@ -99,7 +91,7 @@ function fetchForecast(cageLat, cageLng){
     // test endpoint variables
     const startTime = 'now';
     const endTime = '2020-08-08'; // 2020-08-14
-    // changeover from openCage to Climacell
+    // transform from openCage to Climacell
     const cclat = cageLat;
     const cclon = cageLng;
     // test ClimaCell endpoint
