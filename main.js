@@ -29,7 +29,7 @@ function handleForm() {
     };
     itinerary.push(locationObject);
       console.log('itinerary before geocoding is:');
-      console.log(itinerary);
+      // console.log(itinerary);
 
     clearForm();
     handleForwardGeocoding(cageCityEncoded, cageStateEncoded);
@@ -59,7 +59,7 @@ function setCoordinates(responseJson) {
   const cageLat = responseJson.results[0].geometry.lat;
   const cageLng = responseJson.results[0].geometry.lng;
     console.log(cageDescription + ' coordinates are: ' + cageLat + ', ' + cageLng);
-    console.log('the itinerary array from inside setCoordinates is: ');
+    // console.log('the itinerary array from inside setCoordinates is: ');
   // push geocoded coordinates into location object
   //  the variable z is only temporary until i put this all into a loop
   const z = itinerary.length-1;
