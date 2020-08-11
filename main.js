@@ -71,18 +71,22 @@ function clearForm() {
 
 function resetItinerary() {
   itinerary = [];
-  $('.js-itinerary').html('');
+  displayItinerary();
 }
 
 function handleItinerary() {
-  $('.js-itinerary').on('click', '#js-delete' , e => {
-    deleteItineraryItem();
+  $('.js-itinerary').on('click', '.js-delete' , e => {
+    console.log(itinerary);
+    deleteItineraryItem(e.target.id);
   })
 }
 
-function deleteItineraryItem() {
-  console.log('deleteItineraryItem was clicked')
+function deleteItineraryItem(buttonId) {
+  console.log('deleteItineraryItem was clicked for button id: ' + buttonId);
   // TO DO: figure out a way to bind each delete button with the index value that it holds in the itinerary array
+  itinerary.splice(buttonId, 1);
+  displayItinerary();
+  console.log(itinerary);
 }
 
 function handleForwardGeocoding(cageCityEncoded, cageStateEncoded) {
@@ -106,19 +110,27 @@ function setCoordinates(responseJson) {
   itinerary[z].itDesc= cageDescription;
   itinerary[z].itLat= cageLat;
   itinerary[z].itLng= cageLng;
+  displayItinerary();
+}
+
+
+function displayItinerary() {
     console.log('the itinerary is now:');
     console.log(itinerary);
-  $('.js-itinerary').append(`
-  <div class="itinerary-object">  
-  <button id="js-delete">X</button>
-  <h3>${itinerary[z].itCity}</h3>
-    <ul>
-      <li>Date Range: <strong>${itinerary[z].itStartDate} to ${itinerary[z].itEndDate}</strong></li>
-      <li>${itinerary[z].itDesc}</li>
-      <li>Coordinates= ${itinerary[z].itLat}, ${itinerary[z].itLng}</li>
-    </ul>
-  </div>
-  `);
+  $('.js-itinerary').html('');
+  itinerary.forEach((city, z) => {
+    $('.js-itinerary').append(`
+    <div class="itinerary-object">  
+    <button class="js-delete" id="${z}">X</button>
+    <h3>${city.itCity}</h3>
+      <ul>
+        <li>Date Range: <strong>${city.itStartDate} to ${city.itEndDate}</strong></li>
+        <li>${city.itDesc}</li>
+        <li>Coordinates= ${city.itLat}, ${city.itLng}</li>
+      </ul>
+    </div>
+    `);
+  })
 }
 
 function handleForecasts() {
@@ -143,14 +155,14 @@ function handleForecasts() {
 function fetchForecast(item, index){
     // console.log('the item city is ' + item.itCity + ' at index: ' + index);
   const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&start_time=${item.itStartDate}&end_time=${item.itEndDate}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
-    // console.log('the url to be fetched is: ' + climaUrl);
+    console.log('the url to be fetched is: ' + climaUrl);
   fetch(climaUrl)
   .then(response => response.json())
   .then(responseJson => displayForecast(responseJson, item.itCity));
 }
 
 function displayForecast(responseJson, itCity) {
-    // console.log(responseJson);
+    console.log(responseJson);
   for (i=0; i < responseJson?.length; i++) {
     if (!responseJson[i]){
       continue;
