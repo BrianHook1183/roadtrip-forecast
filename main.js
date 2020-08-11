@@ -1,15 +1,15 @@
 // TO DO:
-// loading phraphic for add to itinerary and Forecast
+// loading graphic for add to itinerary and Forecast
 // handle mispelled locations
 // button on each itinerary item to delete
-// Clear Itinerary and start new
 // adding to itinerary needs to be seperate from setCoordinates
+// forecast needs to reorder itself by the dates
 
 
 
 // BUGS:
 // can add empty objects to Itinerary array
-// required tag not workong for date or city input
+// 'required' tag not workong for date or city input
 // forecast dates do not make sense
 
 
@@ -24,9 +24,19 @@ let itinerary = [];
 
 
 
+function handleStart() {
+  $('#js-start').click( e => {
+      // navigation button
+    $('.start').addClass('hide');
+    $('.setup').removeClass('hide');
+  })
+}
+
+
 function handleForm() {
   $('#js-submit').click(e => {
     e.preventDefault();
+    //  TO DO: add loading graphic here while coordinate are being retrieved
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
     const cageState = $('#js-state').val();
@@ -114,9 +124,18 @@ function setCoordinates(responseJson) {
 function handleForecasts() {
   $('#js-fetch').click(e => {
     e.preventDefault();
+      // navigation button
+    $('.setup').addClass('hide');
+    $('.forecast').removeClass('hide');
+    //  TO DO: add loading graphic here
     $('.js-results').html('');
     // runs the function fetchForecast on each item in the itinerary array
     itinerary.forEach(fetchForecast);
+  })
+  $('#js-back').click(e => {
+    // navigation button
+    $('.setup').removeClass('hide');
+    $('.forecast').addClass('hide');
   })
 }
 
@@ -153,3 +172,4 @@ function displayForecast(responseJson, itCity) {
 $(handleForecasts);
 $(handleItinerary);
 $(handleForm);
+$(handleStart);

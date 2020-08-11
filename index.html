@@ -15,10 +15,13 @@
 			<nav><p><a href="https://brianhook1183.github.io/roadtrip-forecast/" target="blank">Deployed GitHub Page</a></p></nav>
 		</header>
 		<main>
-      <section>
+
+      <section class="start">
         <h2>Start</h2>
+        <button id="js-start">Start</button>
       </section>
-      <section>
+
+      <section class="setup hide">
         <h2>Set-up</h2>
         <form>
           <label>City: <input type="text" id="js-city" value="Santa Fe">
@@ -40,11 +43,14 @@
         </div>
         <button id="js-fetch">Get forecasts</button>
       </section>
-      <section>
+
+      <section class="forecast hide">
         <h2>Forecast</h2>
+        <button id="js-back">Back</button>
         <div class="js-results hide">
         </div>
-			</section>
+      </section>
+      
 		</main>
 		<footer>
 			<p>Copyright Brian Hook 2020</p>

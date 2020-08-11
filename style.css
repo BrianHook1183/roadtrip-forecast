@@ -4,7 +4,7 @@ body {
 
 section {
   border: 1px solid black;
-  min-height: 700px;
+  /* min-height: 700px; */
   margin: 8px;
   padding: 8px;
 }
