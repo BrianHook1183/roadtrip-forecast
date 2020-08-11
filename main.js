@@ -3,7 +3,7 @@
 // handle mispelled locations
 // button on each itinerary item to delete
 // Clear Itinerary and start new
-
+// adding to itinerary needs to be seperate from setCoordinates
 
 
 
@@ -26,26 +26,26 @@ let itinerary = [];
 function handleForm() {
   $('#js-submit').click(e => {
     e.preventDefault();
-    // console.log('addToItinerary was clicked');
+      // console.log('addToItinerary was clicked');
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
     const cageState = $('#js-state').val();
     const cageStateEncoded = encodeURIComponent(cageState);
-    const startDate = $('#js-date').val();
-      console.log('city is ' + cageCity + ' and state is ' + cageState + ' and the arrival date is ' + startDate);
-    
+    const startDate = $('#js-arr-date').val();
+    const endDate = $('#js-dep-date').val();
+      console.log('city is ' + cageCity + ' and state is ' + cageState + ' and the date range is ' + startDate + ' to ' + endDate);
     const locationObject = 
     {
       'itCity': cageCity,
       'itState': cageState,
       'itCityEnc': cageCityEncoded,
       'itStateEnc': cageStateEncoded,
-      'itDate': startDate
+      'itStartDate': startDate,
+      'itEndDate': endDate
     };
     itinerary.push(locationObject);
       console.log('itinerary before geocoding is:');
       // console.log(itinerary);
-
     clearForm();
     handleForwardGeocoding(cageCityEncoded, cageStateEncoded);
   })
@@ -57,7 +57,8 @@ function handleForm() {
 function clearForm() {
   $('#js-city').val('');
   $('#js-state').val('');
-  $('#js-date').val('');
+  $('#js-arr-date').val('');
+  $('#js-dep-date').val('');
 }
 
 function resetItinerary() {
@@ -106,7 +107,7 @@ function setCoordinates(responseJson) {
   <button id="js-delete">X</button>
   <h3>${itinerary[z].itCity}</h3>
     <ul>
-      <li>Arrival Date: <strong>${itinerary[z].itDate}</strong></li>
+      <li>Date Range: <strong>${itinerary[z].itStartDate} to ${itinerary[z].itEndDate}</strong></li>
       <li>${itinerary[z].itDesc}</li>
       <li>Coordinates= ${itinerary[z].itLat}, ${itinerary[z].itLng}</li>
     </ul>
@@ -117,12 +118,16 @@ function setCoordinates(responseJson) {
 
 
 
-function fetchForecast(){
-  // console.log('fetchForecast was initialized');
+function fetchForecasts(){
+    // console.log('fetchForecasts was initialized');
   $('#js-fetch').click(e => {
     e.preventDefault();
     // console.log('fetch was clicked');
     
+
+
+
+
     // test endpoint variables
     const startTime = 'now';
     const endTime = '2020-08-08'; // 2020-08-14
@@ -131,16 +136,21 @@ function fetchForecast(){
     const cclon = cageLng;
     // test ClimaCell endpoint
     const ccTestUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${cclat}&lon=${cclon}&unit_system=us&start_time=${startTime}&end_time=${endTime}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
-    console.log('the url to be fetched is: ' + ccTestUrl);
+      console.log('the url to be fetched is: ' + ccTestUrl);
     fetch(ccTestUrl)
     .then(response => response.json())
     .then(responseJson => displayForecast(responseJson));
+
+
+
+
+
   })
 }
 
 function displayForecast(responseJson) {
-  // console.log('displayForecast ran');
-  console.log(responseJson);
+    // console.log('displayForecast ran');
+    console.log(responseJson);
   for (i=0; i < responseJson?.length; i++) {
     if (!responseJson[i]){
       continue;
