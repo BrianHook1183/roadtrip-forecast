@@ -41,3 +41,15 @@ label {
 h3 {
   text-align: center;
 }
+
+.flex {
+  display: flex;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.space-between {
+  justify-content: space-between ;
+}

@@ -1,3 +1,18 @@
+// TO DO:
+// loading phraphic for add to itinerary and Forecast
+// handle mispelled locations
+// button on each itinerary item to delete
+// Clear Itinerary and start new
+
+
+
+
+// BUGS:
+// can add empty objects to Itinerary array
+
+
+
+
 // OpenCgeData api key
 const apiKeyCage = 'a4e6cc64bbe749ca8ec7aed6282a3091';
 // ClimaCell api key
@@ -34,12 +49,20 @@ function handleForm() {
     clearForm();
     handleForwardGeocoding(cageCityEncoded, cageStateEncoded);
   })
+  $('#js-reset').click(e => {
+    resetItinerary();
+  })
 }
 
 function clearForm() {
   $('#js-city').val('');
   $('#js-state').val('');
   $('#js-date').val('');
+}
+
+function resetItinerary() {
+  itinerary = [];
+  $('.js-itinerary').html('');
 }
 
 function handleForwardGeocoding(cageCityEncoded, cageStateEncoded) {

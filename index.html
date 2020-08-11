@@ -15,32 +15,32 @@
 			<nav><p><a href="https://brianhook1183.github.io/roadtrip-forecast/" target="blank">Deployed GitHub Page</a></p></nav>
 		</header>
 		<main>
-			<section>
-        <h2>Dev Area</h2>
-        <form>
-          <label>City:<input type="text" id="js-city" value="Santa Fe">
-          </label><br>
-          <label>State:<input type="text" id="js-state" value="New Mexico">
-          </label><br>
-          <label>Arrival Date:<input type="date" id="js-date" value="2020-08-08">
-          </label><br>
-          <input id="js-submit" type="submit" value="add to itinerary w/ coordinates and clear form">
-        </form>
-        <hr>
-        <h2>Itinerary</h2>
-        <div class="js-itinerary itinerary">
-        </div>
-        <button id="js-fetch">Get forecast</button>
-        <p class="js-results hide"></p>
-      </section>
       <section>
         <h2>Start</h2>
       </section>
       <section>
         <h2>Set-up</h2>
+        <form>
+          <label>City: <input type="text" id="js-city" value="Santa Fe">
+          </label><br>
+          <label>State: <input type="text" id="js-state" value="New Mexico">
+          </label><br>
+          <label>Arrival Date: <input type="date" id="js-date" value="2020-08-08">
+          </label><br>
+          <div class="flex row space-between">
+            <input id="js-submit" type="submit" value="add to itinerary">
+            <input id="js-reset" type="reset" value="reset all">
+          </div>
+        </form>
+        <hr>
+        <h2>Itinerary</h2>
+        <div class="js-itinerary itinerary">
+        </div>
       </section>
       <section>
         <h2>Forecast</h2>
+        <button id="js-fetch">Get forecast</button>
+        <p class="js-results hide"></p>
 			</section>
 		</main>
 		<footer>
