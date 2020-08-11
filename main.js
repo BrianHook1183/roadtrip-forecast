@@ -115,8 +115,11 @@ function setCoordinates(responseJson) {
 
 
 function displayItinerary() {
-    console.log('the itinerary is now:');
-    console.log(itinerary);
+  itinerary.sort((a, b) => {
+    return new Date(a.itStartDate) - new Date(b.itStartDate);
+  });
+  console.log('the itinerary is now:');
+  console.log(itinerary);
   $('.js-itinerary').html('');
   itinerary.forEach((city, z) => {
     $('.js-itinerary').append(`
@@ -130,7 +133,7 @@ function displayItinerary() {
       </ul>
     </div>
     `);
-  })
+  });
 }
 
 function handleForecasts() {
@@ -141,6 +144,10 @@ function handleForecasts() {
     $('.forecast').removeClass('hide');
     //  TO DO: add loading graphic here
     $('.js-results').html('');
+    // sorts the itinerary again for forecast
+    itinerary.sort((a, b) => {
+      return new Date(a.itStartDate) - new Date(b.itStartDate);
+    });
     // runs the function fetchForecast on each item in the itinerary array
     itinerary.forEach(fetchForecast);
   })
