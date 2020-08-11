@@ -11,6 +11,7 @@
 // can add empty objects to Itinerary array
 // 'required' tag not workong for date or city input
 // forecast dates do not make sense
+//  the first time you make a 3 part itinerary, the sort for the forecast works, if you then delete a middle day, forecast it, then go back to set up to readd that middle day, the sort on forecast display stops working.
 
 
 
@@ -118,7 +119,7 @@ function setCoordinates(responseJson) {
 function displayItinerary() {
     console.log('the itinerary is now:');
     console.log(itinerary);
-  itinerary.sort(function(a, b){
+  itinerary.sort((a, b) => {
     return new Date(a.itStartDate) - new Date(b.itStartDate);
   });
     console.log('the itinerary after sort is now:');
@@ -150,7 +151,7 @@ function handleForecasts() {
     //  loading graphic while forecast loads
     $('.js-results').html('<div id="js-loading2"><p>loading...</p><img src="assets/loading.svg"></div>');
     // sorts the itinerary again
-    itinerary.sort(function(a, b){
+    itinerary.sort((a, b) => {
       return new Date(a.itStartDate) - new Date(b.itStartDate);
     });
     // runs the function fetchForecast on each item in the itinerary array
