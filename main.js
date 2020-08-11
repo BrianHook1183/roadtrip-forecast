@@ -10,6 +10,7 @@
 // BUGS:
 // can add empty objects to Itinerary array
 // required tag not workong for date or city input
+// forecast dates do not make sense
 
 
 
@@ -26,7 +27,6 @@ let itinerary = [];
 function handleForm() {
   $('#js-submit').click(e => {
     e.preventDefault();
-      // console.log('addToItinerary was clicked');
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
     const cageState = $('#js-state').val();
@@ -44,8 +44,6 @@ function handleForm() {
       'itEndDate': endDate
     };
     itinerary.push(locationObject);
-      console.log('itinerary before geocoding is:');
-      // console.log(itinerary);
     clearForm();
     handleForwardGeocoding(cageCityEncoded, cageStateEncoded);
   })
@@ -78,22 +76,19 @@ function deleteItineraryItem() {
 }
 
 function handleForwardGeocoding(cageCityEncoded, cageStateEncoded) {
-    console.log('handleForwardGeocoding ran');
-  // test OpenCageData endpoint
-  const cageTestUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}%2C%20${cageStateEncoded}&countrycode=us`;
-    console.log('the fetched url will be: ' + cageTestUrl);
-  fetch(cageTestUrl)
+  const cageUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}%2C%20${cageStateEncoded}&countrycode=us`;
+    // console.log('the geocoding fetched url will be: ' + cageUrl);
+  fetch(cageUrl)
   .then(response => response.json())
   .then(responseJson => setCoordinates(responseJson));
 }
 
 function setCoordinates(responseJson) {
-  // console.log(responseJson);
   //  limit=1 in endpoint ensures that [0] is the only "results" to access
   const cageDescription = responseJson.results[0].formatted;
   const cageLat = responseJson.results[0].geometry.lat;
   const cageLng = responseJson.results[0].geometry.lng;
-    console.log(cageDescription + ' coordinates are: ' + cageLat + ', ' + cageLng);
+    // console.log(cageDescription + ' coordinates are: ' + cageLat + ', ' + cageLng);
     // console.log('the itinerary array from inside setCoordinates is: ');
   // push geocoded coordinates into location object
   //  the variable z is only temporary until i put this all into a loop
@@ -101,6 +96,7 @@ function setCoordinates(responseJson) {
   itinerary[z].itDesc= cageDescription;
   itinerary[z].itLat= cageLat;
   itinerary[z].itLng= cageLng;
+    console.log('the itinerary is now:');
     console.log(itinerary);
   $('.js-itinerary').append(`
   <div class="itinerary-object">  
@@ -115,49 +111,45 @@ function setCoordinates(responseJson) {
   `);
 }
 
-
-
-
-function fetchForecasts(){
-    // console.log('fetchForecasts was initialized');
+function handleForecasts() {
   $('#js-fetch').click(e => {
     e.preventDefault();
-    // console.log('fetch was clicked');
-    
-
-
-
-
-    // test endpoint variables
-    const startTime = 'now';
-    const endTime = '2020-08-08'; // 2020-08-14
-    // transform from openCage to Climacell
-    const cclat = cageLat;
-    const cclon = cageLng;
-    // test ClimaCell endpoint
-    const ccTestUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${cclat}&lon=${cclon}&unit_system=us&start_time=${startTime}&end_time=${endTime}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
-      console.log('the url to be fetched is: ' + ccTestUrl);
-    fetch(ccTestUrl)
-    .then(response => response.json())
-    .then(responseJson => displayForecast(responseJson));
-
-
-
-
-
+    $('.js-results').html('');
+    // runs the function fetchForecast on each item in the itinerary array
+    itinerary.forEach(fetchForecast);
   })
 }
 
-function displayForecast(responseJson) {
-    // console.log('displayForecast ran');
-    console.log(responseJson);
+// this runs against each itinerary item
+function fetchForecast(item, index){
+    // console.log('the item city is ' + item.itCity + ' at index: ' + index);
+  const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&start_time=${item.itStartDate}&end_time=${item.itEndDate}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
+    // console.log('the url to be fetched is: ' + climaUrl);
+  fetch(climaUrl)
+  .then(response => response.json())
+  .then(responseJson => displayForecast(responseJson, item.itCity));
+}
+
+function displayForecast(responseJson, itCity) {
+    // console.log(responseJson);
   for (i=0; i < responseJson?.length; i++) {
     if (!responseJson[i]){
       continue;
     }
-  $('.js-results').removeClass('hide').append('<p>On ' + responseJson[i].observation_time.value + ' it will be ' + responseJson[i].weather_code.value + ' with a ' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation.</p>');
+  $('.js-results').removeClass('hide').append('<p>' + itCity + ' on ' + responseJson[i].observation_time.value + '<ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" min/max<ul><li>' + responseJson[i].feels_like[0].min.value + '</li><li>' + responseJson[i].feels_like[1].max.value + '</li></ul></li></p>');
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+$(handleForecasts);
 $(handleItinerary);
 $(handleForm);
