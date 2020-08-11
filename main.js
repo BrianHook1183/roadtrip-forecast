@@ -36,7 +36,8 @@ function handleStart() {
 function handleForm() {
   $('#js-submit').click(e => {
     e.preventDefault();
-    //  TO DO: add loading graphic here while coordinate are being retrieved
+    //   loading graphic while coordinate are being retrieved
+    $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
     const cageState = $('#js-state').val();
@@ -115,11 +116,13 @@ function setCoordinates(responseJson) {
 
 
 function displayItinerary() {
-  itinerary.sort((a, b) => {
+    console.log('the itinerary is now:');
+    console.log(itinerary);
+  itinerary.sort(function(a, b){
     return new Date(a.itStartDate) - new Date(b.itStartDate);
   });
-  console.log('the itinerary is now:');
-  console.log(itinerary);
+    console.log('the itinerary after sort is now:');
+    console.log(itinerary);
   $('.js-itinerary').html('');
   itinerary.forEach((city, z) => {
     $('.js-itinerary').append(`
@@ -134,6 +137,8 @@ function displayItinerary() {
     </div>
     `);
   });
+    // Hide loading graphic after itinerary has displayed
+  $('#js-loading1').addClass('hide');
 }
 
 function handleForecasts() {
@@ -142,10 +147,10 @@ function handleForecasts() {
       // navigation button
     $('.setup').addClass('hide');
     $('.forecast').removeClass('hide');
-    //  TO DO: add loading graphic here
-    $('.js-results').html('');
-    // sorts the itinerary again for forecast
-    itinerary.sort((a, b) => {
+    //  loading graphic while forecast loads
+    $('.js-results').html('<div id="js-loading2"><p>loading...</p><img src="assets/loading.svg"></div>');
+    // sorts the itinerary again
+    itinerary.sort(function(a, b){
       return new Date(a.itStartDate) - new Date(b.itStartDate);
     });
     // runs the function fetchForecast on each item in the itinerary array
@@ -176,6 +181,8 @@ function displayForecast(responseJson, itCity) {
     }
   $('.js-results').removeClass('hide').append('<p>' + itCity + ' on ' + responseJson[i].observation_time.value + '<ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" min/max<ul><li>' + responseJson[i].feels_like[0].min.value + '</li><li>' + responseJson[i].feels_like[1].max.value + '</li></ul></li></p>');
   }
+  // Hide loading graphic after forecast has displayed
+   $('#js-loading2').addClass('hide');
 }
 
 
