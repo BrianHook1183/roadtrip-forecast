@@ -27,10 +27,24 @@ form {
 label {
   font-weight: bold;
 }
+input[type="reset"] {
+  background-color: darkred;
+  color: white;
+  font-weight: bold;
+}
 
-.itinerary {
+/* Flex box */
+.flex {
   display: flex;
+}
+.row {
+  flex-direction: row;
+}
+.column {
   flex-direction: column;
+}
+.space-between {
+  justify-content: space-between ;
 }
 
 .itinerary-object {
@@ -40,16 +54,4 @@ label {
 }
 h3 {
   text-align: center;
-}
-
-.flex {
-  display: flex;
-}
-
-.row {
-  flex-direction: row;
-}
-
-.space-between {
-  justify-content: space-between ;
 }

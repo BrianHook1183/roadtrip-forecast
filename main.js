@@ -9,7 +9,7 @@
 
 // BUGS:
 // can add empty objects to Itinerary array
-
+// required tag not workong for date or city input
 
 
 
@@ -65,6 +65,17 @@ function resetItinerary() {
   $('.js-itinerary').html('');
 }
 
+function handleItinerary() {
+  $('.js-itinerary').on('click', '#js-delete' , e => {
+    deleteItineraryItem();
+  })
+}
+
+function deleteItineraryItem() {
+  console.log('deleteItineraryItem was clicked')
+  // TO DO: figure out a way to bind each delete button with the index value that it holds in the itinerary array
+}
+
 function handleForwardGeocoding(cageCityEncoded, cageStateEncoded) {
     console.log('handleForwardGeocoding ran');
   // test OpenCageData endpoint
@@ -92,6 +103,7 @@ function setCoordinates(responseJson) {
     console.log(itinerary);
   $('.js-itinerary').append(`
   <div class="itinerary-object">  
+  <button id="js-delete">X</button>
   <h3>${itinerary[z].itCity}</h3>
     <ul>
       <li>Arrival Date: <strong>${itinerary[z].itDate}</strong></li>
@@ -137,5 +149,5 @@ function displayForecast(responseJson) {
   }
 }
 
-
+$(handleItinerary);
 $(handleForm);
