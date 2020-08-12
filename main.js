@@ -1,18 +1,16 @@
 // TO DO:
-// loading graphic for add to itinerary and Forecast
+// loading graphic for Forecast may or may not be working
 // handle mispelled locations
-// button on each itinerary item to delete
-// adding to itinerary needs to be seperate from setCoordinates
 // forecast needs to reorder itself by the dates
 
 
 
 // BUGS:
 // can add empty objects to Itinerary array
+//  if you add an empty city/state/dates to itinerary it indefinitely loads
 // 'required' tag not workong for date or city input
-// forecast dates do not make sense
-//  the first time you make a 3 part itinerary, the sort for the forecast works, if you then delete a middle day, forecast it, then go back to set up to readd that middle day, the sort on forecast display stops working.
-
+// forecast dates do not make sense - you get the day before the starting date
+//  the first time you make a 3 part itinerary, the sort for the forecast works, if you then delete a middle day, forecast it, then go back to set up to readd that middle day, the sort on forecast display stops working. Sometimes when you get forecast, its not sorted, but if you hit back and then go straight back to get forecast, its correct., error must be in the order of the lines of code, something needs to be moved around. 
 
 
 // OpenCgeData api key
