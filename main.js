@@ -23,19 +23,20 @@ const apiKeyClima = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
 // Global Variables
 let itinerary = [];
 
-// Date
-let today = new Date();
-  Date.prototype.addDays = function(days) {
-    var date = new Date(this.valueOf());
-    date.setDate(date.getDate() + days);
-    return date;
-  }
+// Dates
+Date.prototype.addDays = function(days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+}
+Date.prototype.toDateInputValue = (function() {
+  var date = new Date(this);
+  date.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+  return date.toJSON().slice(0,10);
+});
 // Currently set to 14 days from now. To change, modify value in addDays function
-let dateLimit = today.addDays(14);
-  let month = ('0' + (dateLimit.getMonth() + 1)).slice(-2);
-  let year = dateLimit.getFullYear();
-  let date = ('0' + dateLimit.getDate()).slice(-2);
-let jsDateLimit = `${year}-${month}-${date}`;
+let today14 = new Date().addDays(14).toDateInputValue();
+let today = new Date().toDateInputValue();
 
 
 
@@ -49,8 +50,8 @@ function handleStart() {
 }
 
 function insertDate() {
-  $('input[type="date"]').attr('max', `${jsDateLimit}`);
-  console.log(`${jsDateLimit}`);
+  $('input[type="date"]').attr('min', today);
+  $('input[type="date"]').attr('max', today14);
 }
 
 function handleForm() {
