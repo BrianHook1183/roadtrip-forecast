@@ -32,7 +32,7 @@ form {
   display: flex;
   flex-direction: column;
   border: 3px solid grey;
-  padding: 25px 50px;
+  padding: 25px;
   margin: auto;
   background-color: rgb(240, 240, 240);
 }
