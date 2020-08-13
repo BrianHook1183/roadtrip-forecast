@@ -1,5 +1,4 @@
      // Features TO DOs:
-
 // add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. 
 // Save / reload 
      
@@ -8,13 +7,11 @@
      
      // Improvement TO DOs:
 // translate overview forecast paramter to pretty version.
-// handle mispelled locations
 // compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast.
 // add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
-// disable adding empty objects to Itinerary array because if you add an empty city/state/dates to itinerary it indefinitely loads
-// 'required' tag not workong for date or city input
+// 'required' tag not workong for date or city input --- sidestepped by adding alerts
 //  most buttons should stay fixed to viewport so they are always accessible
-// use this city look up for auto complete/validation, also has coordinates https://geobytes.com/free-ajax-cities-jsonp-api/
+// use this city look up for auto complete/validation to avoid mispellings, also has coordinates https://geobytes.com/free-ajax-cities-jsonp-api/
 
 
 
