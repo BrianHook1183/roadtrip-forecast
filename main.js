@@ -3,6 +3,7 @@
 // handle mispelled locations
 // forecast needs to reorder itself by the dates
 // compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast
+// add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
 
 
 
@@ -31,10 +32,10 @@ let today = new Date();
   }
 // Currently set to 14 days from now. To change, modify value in addDays function
 let dateLimit = today.addDays(14);
-let month = dateLimit.getMonth() + 1;
-let year = dateLimit.getFullYear();
-let date = dateLimit.getDate();
-let dateLimitClean = `${month}/${date}/${year}`;
+  let month = ('0' + (dateLimit.getMonth() + 1)).slice(-2);
+  let year = dateLimit.getFullYear();
+  let date = ('0' + dateLimit.getDate()).slice(-2);
+let jsDateLimit = `${year}-${month}-${date}`;
 
 
 
@@ -48,7 +49,8 @@ function handleStart() {
 }
 
 function insertDate() {
-  $('#js-dateLimit').html(dateLimitClean);
+  $('input[type="date"]').attr('max', `${jsDateLimit}`);
+  console.log(`${jsDateLimit}`);
 }
 
 function handleForm() {
@@ -166,7 +168,7 @@ function handleForecasts() {
     $('.setup').addClass('hide');
     $('.forecast').removeClass('hide');
     //  loading graphic while forecast loads
-    $('.js-results').html('<div id="js-loading2"><p>loading...</p><img src="assets/loading.svg"></div>');
+    $('.js-results').removeClass('hide').html('<div id="js-loading2"><p>loading...</p><img src="assets/loading.svg"></div>');
     // sorts the itinerary again
     itinerary.sort((a, b) => {
       return new Date(a.itStartDate) - new Date(b.itStartDate);
@@ -197,7 +199,7 @@ function displayForecast(responseJson, itCity) {
     if (!responseJson[i]){
       continue;
     }
-  $('.js-results').removeClass('hide').append('<p>' + itCity + ' on ' + responseJson[i].observation_time.value + '<ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature<ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></li></p>');
+  $('.js-results').append('<p>' + itCity + ' on ' + responseJson[i].observation_time.value + '<ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature<ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></li></p>');
   }
   // Hide loading graphic after forecast has displayed
    $('#js-loading2').addClass('hide');
