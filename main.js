@@ -1,15 +1,13 @@
-     // FeaturesTO DOs:
+     // Features TO DOs:
 
 // add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. 
 // Save / reload 
-
      
      // BUGS:
-// forecast needs to reorder itself by the dates
-// fetched forecast dates do not make sense - you get the day before the starting date
-//  The order of the forecast changes every time you generate it.
+//  if two stops arrive on the same day, need to sort which date departs later than the other for forecast AND itinerary order
      
      // Improvement TO DOs:
+// translate overview forecast paramter to pretty version.
 // handle mispelled locations
 // compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast.
 // add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
@@ -63,8 +61,7 @@ function insertDate() {
 function handleForm() {
   $('.js-submit').click(e => {
     e.preventDefault();
-    //   loading graphic while coordinate are being retrieved
-    $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
+
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
     const cageState = $('#js-state').val();
@@ -81,8 +78,14 @@ function handleForm() {
       'itStartDate': startDate,
       'itEndDate': endDate
     };
+    if (!cageCity || !startDate || !endDate){
+      alert("Missing required field!!");
+      return;
+    }
     itinerary.push(locationObject);
     clearForm();
+    //   loading graphic while coordinate are being retrieved
+    $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
     handleForwardGeocoding(cageCityEncoded, cageStateEncoded);
   })
   $('#js-reset').click(e => {
@@ -220,7 +223,7 @@ function displayForecast(responseJson, itCity, itStartDate) {
     }
     // Filters out the unwanted previous day that is supplied by forecast API
     if (responseJson[i].observation_time.value >= itStartDate){
-  $('.js-results').append('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
+  $('.js-results').append('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
     };
   }
   // Hide loading graphic after forecast has displayed

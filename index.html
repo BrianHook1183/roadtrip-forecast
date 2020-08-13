@@ -22,13 +22,15 @@
       <section class="setup hide flex column">
         <h2>Add a Stop</h2>
         <form>
-          <label>City: <input type="text" id="js-city" value="Santa Fe">
+          <h3>Where?</h3>
+          <label>City: <input type="text" id="js-city" placeholder="(required)">
           </label><br>
-          <label>State: <input type="text" id="js-state" value="New Mexico">
+          <label>State: <input type="text" id="js-state" placeholder="(recommended)" >
           </label><br>
-          <label>Arrival Date: <input type="Date" id="js-arr-date" value="2020-08-15">
+          <h3>When?</h3>
+          <label>Arrival Date: <input type="Date" id="js-arr-date">
           </label>
-          <label>Departure Date: <input type="date" id="js-dep-date" value="2020-08-16">
+          <label>Departure Date: <input type="date" id="js-dep-date">
           </label><br>
           <div class="flex row space-between">
             <input class="js-submit" type="submit" value="add to itinerary">
