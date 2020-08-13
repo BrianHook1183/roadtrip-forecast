@@ -2,6 +2,7 @@
 // loading graphic for Forecast may or may not be working
 // handle mispelled locations
 // forecast needs to reorder itself by the dates
+// compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast
 
 
 
@@ -10,7 +11,7 @@
 //  if you add an empty city/state/dates to itinerary it indefinitely loads
 // 'required' tag not workong for date or city input
 // forecast dates do not make sense - you get the day before the starting date
-//  the first time you make a 3 part itinerary, the sort for the forecast works, if you then delete a middle day, forecast it, then go back to set up to readd that middle day, the sort on forecast display stops working. Sometimes when you get forecast, its not sorted, but if you hit back and then go straight back to get forecast, its correct., error must be in the order of the lines of code, something needs to be moved around. 
+//  The order of the forecast changes every time you generate it.
 
 
 // OpenCgeData api key
@@ -21,16 +22,34 @@ const apiKeyClima = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
 // Global Variables
 let itinerary = [];
 
+// Date
+let today = new Date();
+  Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  }
+// Currently set to 14 days from now. To change, modify value in addDays function
+let dateLimit = today.addDays(14);
+let month = dateLimit.getMonth() + 1;
+let year = dateLimit.getFullYear();
+let date = dateLimit.getDate();
+let dateLimitClean = `${month}/${date}/${year}`;
+
 
 
 function handleStart() {
   $('#js-start').click( e => {
-      // navigation button
+    // navigation button
     $('.start').addClass('hide');
+    insertDate();
     $('.setup').removeClass('hide');
   })
 }
 
+function insertDate() {
+  $('#js-dateLimit').html(dateLimitClean);
+}
 
 function handleForm() {
   $('#js-submit').click(e => {
@@ -178,7 +197,7 @@ function displayForecast(responseJson, itCity) {
     if (!responseJson[i]){
       continue;
     }
-  $('.js-results').removeClass('hide').append('<p>' + itCity + ' on ' + responseJson[i].observation_time.value + '<ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" min/max<ul><li>' + responseJson[i].feels_like[0].min.value + '</li><li>' + responseJson[i].feels_like[1].max.value + '</li></ul></li></p>');
+  $('.js-results').removeClass('hide').append('<p>' + itCity + ' on ' + responseJson[i].observation_time.value + '<ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature<ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></li></p>');
   }
   // Hide loading graphic after forecast has displayed
    $('#js-loading2').addClass('hide');
