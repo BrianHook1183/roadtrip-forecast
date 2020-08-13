@@ -184,7 +184,10 @@ function handleForecasts() {
     //   return new Date(a.itStartDate) - new Date(b.itStartDate);
     // });
     // runs the function fetchForecast on each item in the itinerary array
-    itinerary.forEach(fetchForecast);
+
+    // '...' = spread operator. ensures that the global version of itinerary is unchanged outside of this function
+    populateForecastStop([...itinerary]);
+    // itinerary.forEach(fetchForecast);
   })
   $('#js-back').click(e => {
     // navigation button
@@ -192,28 +195,31 @@ function handleForecasts() {
     $('.forecast').addClass('hide');
   })
 }
-
-// this runs against each itinerary item
-function fetchForecast(item, index){
-    // console.log('the item city is ' + item.itCity + ' at index: ' + index);
+// Recursively populating forecast. (instead of  itinerary.forEach(fetchForecast);)
+function populateForecastStop(itinerary) {
+  // base case
+  if (itinerary.length === 0){
+    return;
+  }
+  item = itinerary.shift();
   const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&start_time=${item.itStartDate}&end_time=${item.itEndDate}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
     console.log('the url to be fetched is: ' + climaUrl);
   fetch(climaUrl)
   .then(response => response.json())
-  .then(responseJson => displayForecast(responseJson, item.itCity));
+  .then(responseJson => {
+    displayForecast(responseJson, item.itCity);
+    populateForecastStop(itinerary);
+  });
 }
-
+// TO:DO:  use a variable stop instead of city to have dates pass through until i need them in forecast to limit which days display
 function displayForecast(responseJson, itCity) {
-    console.log(responseJson);
+    // console.log(responseJson);
   for (i=0; i < responseJson?.length; i++) {
     if (!responseJson[i]){
       continue;
     }
   $('.js-results').append('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
-  
-  testArray.push('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
   }
-  console.log(testArray);
   // Hide loading graphic after forecast has displayed
    $('#js-loading2').addClass('hide');
 }
