@@ -1,19 +1,3 @@
-     // Features TO DOs:
-// add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. 
-// Save / reload 
-     
-     // BUGS:
-//  if two stops arrive on the same day, need to sort which date departs later than the other for forecast AND itinerary order
-     
-     // Improvement TO DOs:
-// translate overview forecast paramter to pretty version.
-// compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast.
-// add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
-// 'required' tag not workong for date or city input --- sidestepped by adding alerts
-//  most buttons should stay fixed to viewport so they are always accessible
-// use this city look up for auto complete/validation to avoid mispellings, also has coordinates https://geobytes.com/free-ajax-cities-jsonp-api/
-
-
 
 // OpenCgeData api key
 const apiKeyCage = 'a4e6cc64bbe749ca8ec7aed6282a3091';
@@ -22,7 +6,6 @@ const apiKeyClima = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
 
 // Global Variables
 let itinerary = [];
-let testArray = [];
 
 // Dates
 Date.prototype.addDays = function(days) {
@@ -172,7 +155,6 @@ function displayItinerary() {
 function handleForecasts() {
   $('.js-fetch').click(e => {
     e.preventDefault();
-    testArray = [];
       // navigation button
     $('.setup').addClass('hide');
     $('.forecast').removeClass('hide');
