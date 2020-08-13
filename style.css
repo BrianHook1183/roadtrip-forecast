@@ -73,7 +73,7 @@ input[type="date"] {
 }
 .itinerary-object {
   border: 1px grey solid;
-  padding: 4px;
+  padding: 4px 12px 4px 4px;
   margin-bottom: 1px;
 }
 .js-delete {
@@ -81,6 +81,7 @@ input[type="date"] {
 }
 h3 {
   text-align: center;
+  margin: 0px;
 }
 .js-fetch {
   background-color: green;

@@ -16,6 +16,7 @@
 // disable adding empty objects to Itinerary array because if you add an empty city/state/dates to itinerary it indefinitely loads
 // 'required' tag not workong for date or city input
 //  most buttons should stay fixed to viewport so they are always accessible
+// use this city look up for auto complete/validation, also has coordinates https://geobytes.com/free-ajax-cities-jsonp-api/
 
 
 
@@ -26,6 +27,7 @@ const apiKeyClima = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
 
 // Global Variables
 let itinerary = [];
+let testArray = [];
 
 // Dates
 Date.prototype.addDays = function(days) {
@@ -141,7 +143,6 @@ function setCoordinates(responseJson) {
   displayItinerary();
 }
 
-
 function displayItinerary() {
   itinerary.sort((a, b) => {
     return new Date(a.itStartDate) - new Date(b.itStartDate);
@@ -172,6 +173,7 @@ function displayItinerary() {
 function handleForecasts() {
   $('.js-fetch').click(e => {
     e.preventDefault();
+    testArray = [];
       // navigation button
     $('.setup').addClass('hide');
     $('.forecast').removeClass('hide');
@@ -207,8 +209,11 @@ function displayForecast(responseJson, itCity) {
     if (!responseJson[i]){
       continue;
     }
-  $('.js-results').append('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature<ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></li></li></ul>');
+  $('.js-results').append('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
+  
+  testArray.push('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
   }
+  console.log(testArray);
   // Hide loading graphic after forecast has displayed
    $('#js-loading2').addClass('hide');
 }
