@@ -201,6 +201,7 @@ function populateForecastStop(itinerary) {
   if (itinerary.length === 0){
     return;
   }
+  // .shit() is acting as a -- incrementer, if this were a loop, the base case above is the condition to stop running the loop.
   item = itinerary.shift();
   const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&start_time=${item.itStartDate}&end_time=${item.itEndDate}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
     console.log('the url to be fetched is: ' + climaUrl);
