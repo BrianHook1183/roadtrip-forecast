@@ -47,6 +47,9 @@ input[type="reset"] {
 .js-submit {
   background-color: rgb(197, 248, 197);
 }
+input[type="date"] {
+  margin-bottom: 4px;
+}
 
 /* Flex box */
 .flex {
@@ -61,7 +64,10 @@ input[type="reset"] {
 .space-between {
   justify-content: space-between ;
 }
-
+.blur {
+  color: transparent;
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
 .js-itinerary {
   margin: auto;
 }

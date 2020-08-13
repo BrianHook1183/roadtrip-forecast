@@ -1,8 +1,11 @@
-     // Feature TO DOs:
-// forecast needs to reorder itself by the dates
-// forecast objects should be text on left, picture on the right with overview interpreted into pictures. 
+     // FeaturesTO DOs:
 
-      // BUGS:
+// add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. 
+// Save / reload 
+
+     
+     // BUGS:
+// forecast needs to reorder itself by the dates
 // fetched forecast dates do not make sense - you get the day before the starting date
 //  The order of the forecast changes every time you generate it.
      
@@ -96,6 +99,7 @@ function resetItinerary() {
   itinerary = [];
   displayItinerary();
   $('.js-fetch').addClass('hide');
+  $('.js-intinerary-title').addClass('blur');
 }
 
 function handleItinerary() {
@@ -159,6 +163,8 @@ function displayItinerary() {
   });
   // Hide loading graphic after itinerary has displayed
   $('#js-loading1').addClass('hide');
+  // unblue the Itinerary Heading
+  $('.js-intinerary-title').removeClass('blur');
   // reveal forecast buton
   $('.js-fetch').removeClass('hide');
 }
