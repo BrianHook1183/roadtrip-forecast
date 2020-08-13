@@ -1,18 +1,18 @@
-// TO DO:
-// loading graphic for Forecast may or may not be working
-// handle mispelled locations
+     // Feature TO DOs:
 // forecast needs to reorder itself by the dates
+
+      // BUGS:
+// fetched forecast dates do not make sense - you get the day before the starting date
+//  The order of the forecast changes every time you generate it.
+     
+     // Improvement TO DOs:
+// handle mispelled locations
 // compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast
 // add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
-
-
-
-// BUGS:
-// can add empty objects to Itinerary array
-//  if you add an empty city/state/dates to itinerary it indefinitely loads
+// disable adding empty objects to Itinerary array because if you add an empty city/state/dates to itinerary it indefinitely loads
 // 'required' tag not workong for date or city input
-// forecast dates do not make sense - you get the day before the starting date
-//  The order of the forecast changes every time you generate it.
+
+
 
 
 // OpenCgeData api key
@@ -34,7 +34,7 @@ Date.prototype.toDateInputValue = (function() {
   date.setMinutes(this.getMinutes() - this.getTimezoneOffset());
   return date.toJSON().slice(0,10);
 });
-// Currently set to 14 days from now. To change, modify value in addDays function
+// ClimaCell api is limited to 14 day forecast. to restrict error, date picker limit is also set to 14 days from now. To change, modify value in addDays function
 let today14 = new Date().addDays(14).toDateInputValue();
 let today = new Date().toDateInputValue();
 
@@ -138,11 +138,9 @@ function setCoordinates(responseJson) {
 
 function displayItinerary() {
     console.log('the itinerary is now:');
-    console.log(itinerary);
   itinerary.sort((a, b) => {
     return new Date(a.itStartDate) - new Date(b.itStartDate);
   });
-    console.log('the itinerary after sort is now:');
     console.log(itinerary);
   $('.js-itinerary').html('');
   itinerary.forEach((city, z) => {
