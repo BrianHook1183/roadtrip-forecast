@@ -152,13 +152,12 @@ function displayItinerary() {
   itinerary.forEach((city, z) => {
     $('.js-itinerary').append(`
     <div class="itinerary-object">  
-    <button class="js-delete" id="${z}">X</button>
-    <h3>${city.itCity}</h3>
-    <ul>
-    <li>Date Range: <strong>${city.itStartDate} to ${city.itEndDate}</strong></li>
-    <li>${city.itDesc}</li>
-    <li>Coordinates= ${city.itLat}, ${city.itLng}</li>
-    </ul>
+      <button class="js-delete" id="${z}">X</button>
+      <h3>${city.itCity}</h3>
+      <ul>
+        <li>Dates: <strong>${city.itStartDate} to ${city.itEndDate}</strong></li>
+        <li>${city.itDesc}</li>
+      </ul>
     </div>
     `);
   });
@@ -208,18 +207,21 @@ function populateForecastStop(itinerary) {
   fetch(climaUrl)
   .then(response => response.json())
   .then(responseJson => {
-    displayForecast(responseJson, item.itCity);
+    displayForecast(responseJson, item.itCity, item.itStartDate);
     populateForecastStop(itinerary);
   });
 }
-// TO:DO:  use a variable stop instead of city to have dates pass through until i need them in forecast to limit which days display
-function displayForecast(responseJson, itCity) {
-    // console.log(responseJson);
+
+function displayForecast(responseJson, itCity, itStartDate) {
+    // TO DO: only pass if (dateinjson matches datefromitinerary) but need these variables first
   for (i=0; i < responseJson?.length; i++) {
     if (!responseJson[i]){
       continue;
     }
+    // Filters out the unwanted previous day that is supplied by forecast API
+    if (responseJson[i].observation_time.value >= itStartDate){
   $('.js-results').append('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
+    };
   }
   // Hide loading graphic after forecast has displayed
    $('#js-loading2').addClass('hide');
