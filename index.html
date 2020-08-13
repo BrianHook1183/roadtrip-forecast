@@ -12,28 +12,26 @@
 		<header>
       <!-- Specified US because openCage is locked to US at the moment, can add country codes to expand to canada etc... -->
 			<h1>US Road Trip Forecast / Planner</h1>
-			<nav><p><a href="https://brianhook1183.github.io/roadtrip-forecast/" target="blank">Deployed GitHub Page</a></p></nav>
 		</header>
 		<main>
 
-      <section class="start">
-        <h2>Start</h2>
+      <section class="start flex column">
         <button id="js-start">Start</button>
       </section>
 
-      <section class="setup hide">
-        <h2>Set-up</h2>
+      <section class="setup hide flex column">
+        <h2>Add a Stop</h2>
         <form>
           <label>City: <input type="text" id="js-city" value="Santa Fe">
           </label><br>
           <label>State: <input type="text" id="js-state" value="New Mexico">
           </label><br>
-          <label>Arrival Date: <input type="date" id="js-arr-date">
+          <label>Arrival Date: <input type="Date" id="js-arr-date" value="2020-08-15">
           </label>
-          <label>Departure Date: <input type="date" id="js-dep-date">
+          <label>Departure Date: <input type="date" id="js-dep-date" value="2020-08-16">
           </label><br>
           <div class="flex row space-between">
-            <input id="js-submit" type="submit" value="add to itinerary">
+            <input class="js-submit" type="submit" value="add to itinerary">
             <input id="js-reset" type="reset" value="clear itinerary">
           </div>
         </form>
@@ -41,19 +39,19 @@
         <h2>Itinerary</h2>
         <div class="js-itinerary flex column">
         </div>
-        <button id="js-fetch">Get forecasts</button>
+        <button class="js-fetch hide">Get forecasts</button>
       </section>
 
       <section class="forecast hide">
         <h2>Forecast</h2>
-        <button id="js-back">Back to Itinerary</button>
+        <button id="js-back">Edit Itinerary</button>
         <div class="js-results hide">
         </div>
       </section>
       
 		</main>
 		<footer>
-			<p>Copyright Brian Hook 2020</p>
+			<p>Copyright Brian Hook 2020<a href="https://brianhook1183.github.io/roadtrip-forecast/" target="blank">.</a></p>
 		</footer>
 		<script
 		src="https://code.jquery.com/jquery-3.5.1.min.js"

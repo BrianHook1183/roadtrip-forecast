@@ -1,5 +1,6 @@
      // Feature TO DOs:
 // forecast needs to reorder itself by the dates
+// forecast objects should be text on left, picture on the right with overview interpreted into pictures. 
 
       // BUGS:
 // fetched forecast dates do not make sense - you get the day before the starting date
@@ -7,11 +8,11 @@
      
      // Improvement TO DOs:
 // handle mispelled locations
-// compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast
+// compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast.
 // add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
 // disable adding empty objects to Itinerary array because if you add an empty city/state/dates to itinerary it indefinitely loads
 // 'required' tag not workong for date or city input
-
+//  most buttons should stay fixed to viewport so they are always accessible
 
 
 
@@ -55,7 +56,7 @@ function insertDate() {
 }
 
 function handleForm() {
-  $('#js-submit').click(e => {
+  $('.js-submit').click(e => {
     e.preventDefault();
     //   loading graphic while coordinate are being retrieved
     $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
@@ -65,7 +66,7 @@ function handleForm() {
     const cageStateEncoded = encodeURIComponent(cageState);
     const startDate = $('#js-arr-date').val();
     const endDate = $('#js-dep-date').val();
-      console.log('city is ' + cageCity + ' and state is ' + cageState + ' and the date range is ' + startDate + ' to ' + endDate);
+    console.log('city is ' + cageCity + ' and state is ' + cageState + ' and the date range is ' + startDate + ' to ' + endDate);
     const locationObject = 
     {
       'itCity': cageCity,
@@ -94,6 +95,7 @@ function clearForm() {
 function resetItinerary() {
   itinerary = [];
   displayItinerary();
+  $('.js-fetch').addClass('hide');
 }
 
 function handleItinerary() {
@@ -113,7 +115,7 @@ function deleteItineraryItem(buttonId) {
 
 function handleForwardGeocoding(cageCityEncoded, cageStateEncoded) {
   const cageUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}%2C%20${cageStateEncoded}&countrycode=us`;
-    // console.log('the geocoding fetched url will be: ' + cageUrl);
+  // console.log('the geocoding fetched url will be: ' + cageUrl);
   fetch(cageUrl)
   .then(response => response.json())
   .then(responseJson => setCoordinates(responseJson));
@@ -124,8 +126,8 @@ function setCoordinates(responseJson) {
   const cageDescription = responseJson.results[0].formatted;
   const cageLat = responseJson.results[0].geometry.lat;
   const cageLng = responseJson.results[0].geometry.lng;
-    // console.log(cageDescription + ' coordinates are: ' + cageLat + ', ' + cageLng);
-    // console.log('the itinerary array from inside setCoordinates is: ');
+  // console.log(cageDescription + ' coordinates are: ' + cageLat + ', ' + cageLng);
+  // console.log('the itinerary array from inside setCoordinates is: ');
   // push geocoded coordinates into location object
   //  the variable z is only temporary until i put this all into a loop
   const z = itinerary.length-1;
@@ -137,41 +139,42 @@ function setCoordinates(responseJson) {
 
 
 function displayItinerary() {
-    console.log('the itinerary is now:');
   itinerary.sort((a, b) => {
     return new Date(a.itStartDate) - new Date(b.itStartDate);
   });
-    console.log(itinerary);
+  console.log(itinerary);
   $('.js-itinerary').html('');
   itinerary.forEach((city, z) => {
     $('.js-itinerary').append(`
     <div class="itinerary-object">  
     <button class="js-delete" id="${z}">X</button>
     <h3>${city.itCity}</h3>
-      <ul>
-        <li>Date Range: <strong>${city.itStartDate} to ${city.itEndDate}</strong></li>
-        <li>${city.itDesc}</li>
-        <li>Coordinates= ${city.itLat}, ${city.itLng}</li>
-      </ul>
+    <ul>
+    <li>Date Range: <strong>${city.itStartDate} to ${city.itEndDate}</strong></li>
+    <li>${city.itDesc}</li>
+    <li>Coordinates= ${city.itLat}, ${city.itLng}</li>
+    </ul>
     </div>
     `);
   });
-    // Hide loading graphic after itinerary has displayed
+  // Hide loading graphic after itinerary has displayed
   $('#js-loading1').addClass('hide');
+  // reveal forecast buton
+  $('.js-fetch').removeClass('hide');
 }
 
 function handleForecasts() {
-  $('#js-fetch').click(e => {
+  $('.js-fetch').click(e => {
     e.preventDefault();
       // navigation button
     $('.setup').addClass('hide');
     $('.forecast').removeClass('hide');
     //  loading graphic while forecast loads
     $('.js-results').removeClass('hide').html('<div id="js-loading2"><p>loading...</p><img src="assets/loading.svg"></div>');
-    // sorts the itinerary again
-    itinerary.sort((a, b) => {
-      return new Date(a.itStartDate) - new Date(b.itStartDate);
-    });
+    // sorts the itinerary again for forecast but NOT WORKING
+    // itinerary.sort((a, b) => {
+    //   return new Date(a.itStartDate) - new Date(b.itStartDate);
+    // });
     // runs the function fetchForecast on each item in the itinerary array
     itinerary.forEach(fetchForecast);
   })
@@ -198,7 +201,7 @@ function displayForecast(responseJson, itCity) {
     if (!responseJson[i]){
       continue;
     }
-  $('.js-results').append('<p>' + itCity + ' on ' + responseJson[i].observation_time.value + '<ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature<ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></li></p>');
+  $('.js-results').append('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature<ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></li></li></ul>');
   }
   // Hide loading graphic after forecast has displayed
    $('#js-loading2').addClass('hide');
