@@ -1,3 +1,7 @@
+//  TO DO:
+// sort by end date instead, this will get rid of last issue
+
+
 
 // OpenCgeData api key
 const apiKeyCage = 'a4e6cc64bbe749ca8ec7aed6282a3091';
@@ -106,8 +110,17 @@ function handleForwardGeocoding(cageCityEncoded, cageStateEncoded) {
   const cageUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}%2C%20${cageStateEncoded}&countrycode=us`;
   // console.log('the geocoding fetched url will be: ' + cageUrl);
   fetch(cageUrl)
-  .then(response => response.json())
-  .then(responseJson => setCoordinates(responseJson));
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error(response.statusText);
+  })
+  .then(responseJson => setCoordinates(responseJson))
+  .catch(err => {
+    // $('#js-error-message').text(`Something went wrong: ${err.message}`);
+    alert(`Something went wrong: ${err.message}`);
+  });
 }
 
 function setCoordinates(responseJson) {
