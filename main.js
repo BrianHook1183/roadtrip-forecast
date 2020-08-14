@@ -1,5 +1,32 @@
-//  TO DO:
+//  Critical TO DOs for submission:
 // sort by end date instead, this will get rid of last issue
+// change city/state input to a single input, encourage being descriptive
+// truncate the recieved full location text to just city, state. and then pass that through to the forecast instead of the user city input
+// translate overview forecast paramter to pretty version.
+// add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClcimaCell offers anything first
+
+// make date input a single input like this https://codepen.io/ankithingarajiya/pen/jjOxMo
+//      ----OR-----
+// add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
+
+
+//:::: "Would be nice" TO DOs for submission:::::
+// make state input a dropdown
+// make the transition between itinerary and forecast with a slide animation https://codeconvey.com/css-transition-slide-down-slide-up/
+// 'required' tag not workong for date or city input --- sidestepped by adding alerts
+// most buttons should stay fixed to viewport so they are always accessible
+// link to local events w/ eventful API
+
+
+// ::::BUGS:::::
+
+
+// ::::::Version 2.0:::::must haves before i graduate/ add to portfolio permanently
+// use this city look up for auto complete/validation to avoid mispellings, also has coordinates https://geobytes.com/free-ajax-cities-jsonp-api/
+// hide APIkeys   https://medium.com/better-programming/how-to-hide-your-api-keys-c2b952bc07e6
+// compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast.
+// Make forecast ino a flipping card like this https://codeconvey.com/Tutorials/css-card-flip-animation/ that has more detailed info on the back. for mobile, this could be some sort of a tap instead that shows expanded info
+// Save / reload   . Might make WAY more sense to do this with stuff i learn in next phase of bootcamp
 
 
 
