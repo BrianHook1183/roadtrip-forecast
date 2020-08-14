@@ -1,6 +1,5 @@
 //  Critical TO DOs for submission:
 // sort by end date instead, this will get rid of last issue
-// change city/state input to a single input, encourage being descriptive
 // truncate the recieved full location text to just city, state. and then pass that through to the forecast instead of the user city input
 // translate overview forecast paramter to pretty version.
 // add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClcimaCell offers anything first
@@ -75,17 +74,13 @@ function handleForm() {
 
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
-    const cageState = $('#js-state').val();
-    const cageStateEncoded = encodeURIComponent(cageState);
     const startDate = $('#js-arr-date').val();
     const endDate = $('#js-dep-date').val();
-    console.log('city is ' + cageCity + ' and state is ' + cageState + ' and the date range is ' + startDate + ' to ' + endDate);
+    console.log('city is ' + cageCity + ' and the date range is ' + startDate + ' to ' + endDate);
     const locationObject = 
     {
       'itCity': cageCity,
-      'itState': cageState,
       'itCityEnc': cageCityEncoded,
-      'itStateEnc': cageStateEncoded,
       'itStartDate': startDate,
       'itEndDate': endDate
     };
@@ -97,7 +92,7 @@ function handleForm() {
     clearForm();
     //   loading graphic while coordinate are being retrieved
     $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
-    handleForwardGeocoding(cageCityEncoded, cageStateEncoded);
+    handleForwardGeocoding(cageCityEncoded);
   })
   $('#js-reset').click(e => {
     resetItinerary();
@@ -106,7 +101,6 @@ function handleForm() {
 
 function clearForm() {
   $('#js-city').val('');
-  $('#js-state').val('');
   $('#js-arr-date').val('');
   $('#js-dep-date').val('');
 }
@@ -133,8 +127,8 @@ function deleteItineraryItem(buttonId) {
   console.log(itinerary);
 }
 
-function handleForwardGeocoding(cageCityEncoded, cageStateEncoded) {
-  const cageUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}%2C%20${cageStateEncoded}&countrycode=us`;
+function handleForwardGeocoding(cageCityEncoded) {
+  const cageUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}&countrycode=us`;
   // console.log('the geocoding fetched url will be: ' + cageUrl);
   fetch(cageUrl)
   .then(response => {
