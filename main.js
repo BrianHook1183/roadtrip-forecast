@@ -3,14 +3,6 @@
 let adjustStartDate = 2;
 let adjustEndDate = 1;
 
-checkAdjustments();
-function checkAdjustments() {
-  console.log(adjustEndDate);
-  if (adjustStartDate > adjustEndDate) {
-    adjustEndDate = adjustStartDate;
-    console.log(adjustEndDate);
-  };
-}
 
 
 //  ::::::::Critical TO DOs for submission::::::::::
@@ -26,7 +18,7 @@ function checkAdjustments() {
 
 
 // ::::BUGS:::::
-
+// if you enter just a state name, the slice for a clean location on itinerary display still had Unite States of America
 
 // ::::::Version 2.0 (must haves before i graduate/ add to portfolio permanently) :::::::::::::::
 // 'required' tag not workong for date or city input --- sidestepped by adding alerts
@@ -47,7 +39,6 @@ const apiKeyClima = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
 
 // Global Variables
 let itinerary = [];
-
 // Dates
 Date.prototype.addDays = function(days) {
   var date = new Date(this.valueOf());
@@ -79,9 +70,9 @@ function insertDateLimits() {
   $('input[type="date"]').attr('max', today14);
   // sets the datepicker display for minimum date for departure to be >= than arrival date. 
   $('#js-dep-date').click( e => {
-   const  activeArrivalDate = $('#js-arr-date').val();
-   console.log('js-dep-date clicked and the activeArrivalDate is: ' + activeArrivalDate);
-   $('#js-dep-date').attr('min', activeArrivalDate);
+    const  activeArrivalDate = $('#js-arr-date').val();
+    console.log('js-dep-date clicked and the activeArrivalDate is: ' + activeArrivalDate);
+    $('#js-dep-date').attr('min', activeArrivalDate);
   });
 }
 
@@ -90,18 +81,19 @@ function handleForm() {
     e.preventDefault();
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
+    checkAdjustments();
     const startDate = $('#js-arr-date').val();
       const startYear = startDate.slice(0, 4);
       const startMonth = startDate.slice(5, 7);
       const startDay = startDate.slice(8, 10);
     const startDateAdj = new Date(startYear, startMonth-1, startDay).addDays(adjustStartDate).toDateInputValue();
     const endDate = $('#js-dep-date').val();
-    const endYear = endDate.slice(0, 4);
-    const endMonth = endDate.slice(5, 7);
-    const endDay = endDate.slice(8, 10);
+      const endYear = endDate.slice(0, 4);
+      const endMonth = endDate.slice(5, 7);
+      const endDay = endDate.slice(8, 10);
     const endDateAdj = new Date(endYear, endMonth-1, endDay).addDays(adjustEndDate).toDateInputValue();
-      console.log('startDate: ' + startDate + ' adjusted: ' + startDateAdj + ' endDate: ' + endDate + ' adjusted: ' + endDateAdj);
-      console.log('city is ' + cageCity + ' and the date range is ' + startDate + ' to ' + endDate);
+    console.log('startDate: ' + startDate + ' adjusted: ' + startDateAdj + ' endDate: ' + endDate + ' adjusted: ' + endDateAdj);
+    console.log('city is ' + cageCity + ' and the date range is ' + startDate + ' to ' + endDate);
     const locationObject = 
     {
       'itCity': cageCity,
@@ -109,8 +101,11 @@ function handleForm() {
       'itStartDate': startDate,
       'itStartDateAdj': startDateAdj,
       'itEndDate': endDate,
-      'itEndDateAdj': endDateAdj
-
+      'itEndDateAdj': endDateAdj,
+      'itStartMonth': startMonth,
+      'itStartDay': startDay,
+      'itEndMonth': endMonth,
+      'itEndDay': endDay
     };
     if (!cageCity || !startDate || !endDate){
       alert("Missing required field!!");
@@ -125,6 +120,14 @@ function handleForm() {
   $('#js-reset').click(e => {
     resetItinerary();
   })
+}
+
+function checkAdjustments() {
+  console.log(adjustEndDate);
+  if (adjustStartDate > adjustEndDate) {
+    adjustEndDate = adjustStartDate;
+    console.log(adjustEndDate);
+  };
 }
 
 function clearForm() {
@@ -180,9 +183,10 @@ function setCoordinates(responseJson) {
   // console.log(cageDescription + ' coordinates are: ' + cageLat + ', ' + cageLng);
   // console.log('the itinerary array from inside setCoordinates is: ');
   // push geocoded coordinates into location object
-  //  the variable z is only temporary until i put this all into a loop
+  //  the variable z acts as -- incrementer and id for each city/stop to delete
   const z = itinerary.length-1;
-  itinerary[z].itDesc= cageDescription;
+  // removes ", United States of America" from each returned location
+  itinerary[z].itDesc= cageDescription.split(",", 2);
   itinerary[z].itLat= cageLat;
   itinerary[z].itLng= cageLng;
   displayItinerary();
@@ -199,11 +203,8 @@ function displayItinerary() {
     $('.js-itinerary').append(`
     <div class="itinerary-object">  
       <button class="js-delete" id="${z}">X</button>
-      <h3>${city.itCity}</h3>
-      <ul>
-        <li>Dates: <strong>${city.itStartDate} to ${city.itEndDate}</strong></li>
-        <li>${city.itDesc}</li>
-      </ul>
+      <h3>${city.itDesc}</h3>
+      <p>Arrive: <strong>${city.itStartMonth}/${city.itStartDay}</strong> Depart:<strong> ${city.itEndMonth}/${city.itEndDay}</strong></p>
     </div>
     `);
   });
@@ -238,26 +239,26 @@ function populateForecastStop(itinerary) {
   if (itinerary.length === 0){
     return;
   }
-  // .shit() is acting as a -- incrementer, if this were a loop, the base case above is the condition to stop running the loop.
+  // .shift() is acting as a -- incrementer, if this were a loop, the base case above is the condition to stop running the loop.
   item = itinerary.shift();
   const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&start_time=${item.itStartDateAdj}&end_time=${item.itEndDateAdj}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
     console.log('the url to be fetched is: ' + climaUrl);
   fetch(climaUrl)
   .then(response => response.json())
   .then(responseJson => {
-    displayForecast(responseJson, item.itCity, item.itStartDate, item.itEndDate);
+    displayForecast(responseJson, item.itDesc, item.itStartDate, item.itEndDate);
     populateForecastStop(itinerary);
   });
 }
 
-function displayForecast(responseJson, itCity, itStartDate, itEndDate) {
+function displayForecast(responseJson, itDesc, itStartDate, itEndDate) {
   for (i=0; i < responseJson?.length; i++) {
     if (!responseJson[i]){
       continue;
     }
     // Filters out the unwanted days that are supplied by forecast API either inherently or from adjustment on user date range
     if (responseJson[i].observation_time.value >= itStartDate && responseJson[i].observation_time.value <= itEndDate){
-  $('.js-results').append('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
+  $('.js-results').append('<ul><li><strong>' + itDesc + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
     };
   }
   // Hide loading graphic after forecast has displayed
