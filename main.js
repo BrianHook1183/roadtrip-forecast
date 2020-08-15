@@ -1,26 +1,26 @@
+// ClimaCell's API is inconsistent with returning the requested date range, these variables will adjust the user inputted dates in the background for the fetch.
+let adjustStartDate = 2;
+let adjustEndDate = 1;
+
 //  Critical TO DOs for submission:
-// sort by end date instead, this will get rid of last issue
 // truncate the recieved full location text to just city, state. and then pass that through to the forecast instead of the user city input
 // translate overview forecast paramter to pretty version.
 // add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClcimaCell offers anything first
 
-// make date input a single input like this https://codepen.io/ankithingarajiya/pen/jjOxMo
-//      ----OR-----
-// add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
-
 
 //:::: "Would be nice" TO DOs for submission:::::
-// make state input a dropdown
 // make the transition between itinerary and forecast with a slide animation https://codeconvey.com/css-transition-slide-down-slide-up/
-// 'required' tag not workong for date or city input --- sidestepped by adding alerts
 // most buttons should stay fixed to viewport so they are always accessible
 // link to local events w/ eventful API
 
 
 // ::::BUGS:::::
-// forecast is having unstable behavior of not returning a day, theory is it has to do with timezones. at 89pm central, all single day stops are returning zero forecasts
+
 
 // ::::::Version 2.0:::::must haves before i graduate/ add to portfolio permanently
+// 'required' tag not workong for date or city input --- sidestepped by adding alerts
+// make date input a single input like this https://codepen.io/ankithingarajiya/pen/jjOxMo
+// add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
 // use this city look up for auto complete/validation to avoid mispellings, also has coordinates https://geobytes.com/free-ajax-cities-jsonp-api/
 // hide APIkeys   https://medium.com/better-programming/how-to-hide-your-api-keys-c2b952bc07e6
 // compare previous itinerary (if there is one) to the new itinerary and if same, dont generate new forecast, just move to it. If itinerary has changed then generate a new forecast.
@@ -58,14 +58,20 @@ function handleStart() {
   $('#js-start').click( e => {
     // navigation button
     $('.start').addClass('hide');
-    insertDate();
+    insertDateLimits();
     $('.setup').removeClass('hide');
   })
 }
 
-function insertDate() {
+function insertDateLimits() {
   $('input[type="date"]').attr('min', today);
   $('input[type="date"]').attr('max', today14);
+  // sets the datepicker display for minimum date for departure to be >= than arrival date. 
+  $('#js-dep-date').click( e => {
+   const  activeArrivalDate = $('#js-arr-date').val();
+   console.log('js-dep-date clicked and the activeArrivalDate is: ' + activeArrivalDate);
+   $('#js-dep-date').attr('min', activeArrivalDate);
+  });
 }
 
 function handleForm() {
@@ -73,25 +79,18 @@ function handleForm() {
     e.preventDefault();
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
-      const startDate = $('#js-arr-date').val();
+    const startDate = $('#js-arr-date').val();
       const startYear = startDate.slice(0, 4);
       const startMonth = startDate.slice(5, 7);
       const startDay = startDate.slice(8, 10);
-        console.log(startDate);
-        console.log(startYear);
-        console.log(startMonth);
-        console.log(startDay);
-    const startDateAdj = new Date(startYear, startMonth-1, startDay).addDays(2).toDateInputValue();
-      const endDate = $('#js-dep-date').val();
-      const endYear = endDate.slice(0, 4);
-      const endMonth = endDate.slice(5, 7);
-      const endDay = endDate.slice(8, 10);
-        console.log(endDate);
-        console.log(endYear);
-        console.log(endMonth);
-        console.log(endDay);
-    const endDateAdj = new Date(endYear, endMonth-1, endDay).addDays(1).toDateInputValue();
-    console.log('city is ' + cageCity + ' and the date range is ' + startDate + ' to ' + endDate);
+    const startDateAdj = new Date(startYear, startMonth-1, startDay).addDays(adjustStartDate).toDateInputValue();
+    const endDate = $('#js-dep-date').val();
+    const endYear = endDate.slice(0, 4);
+    const endMonth = endDate.slice(5, 7);
+    const endDay = endDate.slice(8, 10);
+    const endDateAdj = new Date(endYear, endMonth-1, endDay).addDays(adjustEndDate).toDateInputValue();
+      console.log('startDate: ' + startDate + ' adjusted: ' + startDateAdj + ' endDate: ' + endDate + ' adjusted: ' + endDateAdj);
+      console.log('city is ' + cageCity + ' and the date range is ' + startDate + ' to ' + endDate);
     const locationObject = 
     {
       'itCity': cageCity,
@@ -253,14 +252,6 @@ function displayForecast(responseJson, itCity, itStartDate) {
   // Hide loading graphic after forecast has displayed
    $('#js-loading2').addClass('hide');
 }
-
-
-
-
-
-
-
-
 
 
 
