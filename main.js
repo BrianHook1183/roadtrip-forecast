@@ -161,8 +161,9 @@ function setCoordinates(responseJson) {
 }
 
 function displayItinerary() {
+  //  reorders the itinerary array to start with the soonest END date
   itinerary.sort((a, b) => {
-    return new Date(a.itStartDate) - new Date(b.itStartDate);
+    return new Date(a.itEndDate) - new Date(b.itEndDate);
   });
   console.log(itinerary);
   $('.js-itinerary').html('');
