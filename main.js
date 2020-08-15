@@ -6,8 +6,6 @@ let adjustEndDate = 1;
 
 
 //  ::::::::Critical TO DOs for submission::::::::::
-// truncate the recieved full location text to just city, state. and then pass that through to the forecast instead of the user city input
-// translate overview forecast paramter to pretty version.
 // add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClcimaCell offers anything first
 
 
@@ -247,6 +245,7 @@ function populateForecastStop(itinerary) {
   .then(response => response.json())
   .then(responseJson => {
     displayForecast(responseJson, item.itDesc, item.itStartDate, item.itEndDate);
+    // calls itself as part of recursion
     populateForecastStop(itinerary);
   });
 }
@@ -258,7 +257,11 @@ function displayForecast(responseJson, itDesc, itStartDate, itEndDate) {
     }
     // Filters out the unwanted days that are supplied by forecast API either inherently or from adjustment on user date range
     if (responseJson[i].observation_time.value >= itStartDate && responseJson[i].observation_time.value <= itEndDate){
-  $('.js-results').append('<ul><li><strong>' + itDesc + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
+        const uglyWeatherCode = responseJson[i].weather_code.value;
+        const betterWeatherCode = uglyWeatherCode.replace("_", " ");
+        // credit to https://attacomsian.com/blog/string-capitalize-javascript
+        const prettyWeatherCode = betterWeatherCode.replace(/\b\w/g, c => c.toUpperCase());
+      $('.js-results').append('<ul><li><strong>' + itDesc + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: <strong>' + prettyWeatherCode + '</strong></li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
     };
   }
   // Hide loading graphic after forecast has displayed
