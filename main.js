@@ -1,8 +1,19 @@
 // ClimaCell's API is inconsistent with returning the requested date range, these variables will adjust the user inputted dates in the background for the fetch.
+// startDate can not be adjusted more than endDate or else for a 1 day forecast you will have an invalid call to the API. checkAdjustments(); will fix this automatically
 let adjustStartDate = 2;
 let adjustEndDate = 1;
 
-//  Critical TO DOs for submission:
+checkAdjustments();
+function checkAdjustments() {
+  console.log(adjustEndDate);
+  if (adjustStartDate > adjustEndDate) {
+    adjustEndDate = adjustStartDate;
+    console.log(adjustEndDate);
+  };
+}
+
+
+//  ::::::::Critical TO DOs for submission::::::::::
 // truncate the recieved full location text to just city, state. and then pass that through to the forecast instead of the user city input
 // translate overview forecast paramter to pretty version.
 // add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClcimaCell offers anything first
@@ -17,7 +28,7 @@ let adjustEndDate = 1;
 // ::::BUGS:::::
 
 
-// ::::::Version 2.0:::::must haves before i graduate/ add to portfolio permanently
+// ::::::Version 2.0 (must haves before i graduate/ add to portfolio permanently) :::::::::::::::
 // 'required' tag not workong for date or city input --- sidestepped by adding alerts
 // make date input a single input like this https://codepen.io/ankithingarajiya/pen/jjOxMo
 // add alert if arrival date is after departure date because API is going to return an error anyways. i could add the min attribute to the departure date picker by using the value the user enters into the arrival date
@@ -234,18 +245,18 @@ function populateForecastStop(itinerary) {
   fetch(climaUrl)
   .then(response => response.json())
   .then(responseJson => {
-    displayForecast(responseJson, item.itCity, item.itStartDate);
+    displayForecast(responseJson, item.itCity, item.itStartDate, item.itEndDate);
     populateForecastStop(itinerary);
   });
 }
 
-function displayForecast(responseJson, itCity, itStartDate) {
+function displayForecast(responseJson, itCity, itStartDate, itEndDate) {
   for (i=0; i < responseJson?.length; i++) {
     if (!responseJson[i]){
       continue;
     }
-    // Filters out the unwanted previous day that is supplied by forecast API
-    if (responseJson[i].observation_time.value >= itStartDate){
+    // Filters out the unwanted days that are supplied by forecast API either inherently or from adjustment on user date range
+    if (responseJson[i].observation_time.value >= itStartDate && responseJson[i].observation_time.value <= itEndDate){
   $('.js-results').append('<ul><li><strong>' + itCity + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: ' + responseJson[i].weather_code.value + '</li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
     };
   }
