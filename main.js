@@ -18,7 +18,7 @@
 
 
 // ::::BUGS:::::
-
+// forecast is having unstable behavior of not returning a day, theory is it has to do with timezones. at 89pm central, all single day stops are returning zero forecasts
 
 // ::::::Version 2.0:::::must haves before i graduate/ add to portfolio permanently
 // use this city look up for auto complete/validation to avoid mispellings, also has coordinates https://geobytes.com/free-ajax-cities-jsonp-api/
@@ -71,18 +71,36 @@ function insertDate() {
 function handleForm() {
   $('.js-submit').click(e => {
     e.preventDefault();
-
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
-    const startDate = $('#js-arr-date').val();
-    const endDate = $('#js-dep-date').val();
+      const startDate = $('#js-arr-date').val();
+      const startYear = startDate.slice(0, 4);
+      const startMonth = startDate.slice(5, 7);
+      const startDay = startDate.slice(8, 10);
+        console.log(startDate);
+        console.log(startYear);
+        console.log(startMonth);
+        console.log(startDay);
+    const startDateAdj = new Date(startYear, startMonth-1, startDay).addDays(2).toDateInputValue();
+      const endDate = $('#js-dep-date').val();
+      const endYear = endDate.slice(0, 4);
+      const endMonth = endDate.slice(5, 7);
+      const endDay = endDate.slice(8, 10);
+        console.log(endDate);
+        console.log(endYear);
+        console.log(endMonth);
+        console.log(endDay);
+    const endDateAdj = new Date(endYear, endMonth-1, endDay).addDays(1).toDateInputValue();
     console.log('city is ' + cageCity + ' and the date range is ' + startDate + ' to ' + endDate);
     const locationObject = 
     {
       'itCity': cageCity,
       'itCityEnc': cageCityEncoded,
       'itStartDate': startDate,
-      'itEndDate': endDate
+      'itStartDateAdj': startDateAdj,
+      'itEndDate': endDate,
+      'itEndDateAdj': endDateAdj
+
     };
     if (!cageCity || !startDate || !endDate){
       alert("Missing required field!!");
@@ -195,15 +213,8 @@ function handleForecasts() {
     $('.forecast').removeClass('hide');
     //  loading graphic while forecast loads
     $('.js-results').removeClass('hide').html('<div id="js-loading2"><p>loading...</p><img src="assets/loading.svg"></div>');
-    // sorts the itinerary again for forecast but NOT WORKING
-    // itinerary.sort((a, b) => {
-    //   return new Date(a.itStartDate) - new Date(b.itStartDate);
-    // });
-    // runs the function fetchForecast on each item in the itinerary array
-
     // '...' = spread operator. ensures that the global version of itinerary is unchanged outside of this function
     populateForecastStop([...itinerary]);
-    // itinerary.forEach(fetchForecast);
   })
   $('#js-back').click(e => {
     // navigation button
@@ -219,7 +230,7 @@ function populateForecastStop(itinerary) {
   }
   // .shit() is acting as a -- incrementer, if this were a loop, the base case above is the condition to stop running the loop.
   item = itinerary.shift();
-  const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&start_time=${item.itStartDate}&end_time=${item.itEndDate}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
+  const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&start_time=${item.itStartDateAdj}&end_time=${item.itEndDateAdj}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
     console.log('the url to be fetched is: ' + climaUrl);
   fetch(climaUrl)
   .then(response => response.json())
@@ -230,7 +241,6 @@ function populateForecastStop(itinerary) {
 }
 
 function displayForecast(responseJson, itCity, itStartDate) {
-    // TO DO: only pass if (dateinjson matches datefromitinerary) but need these variables first
   for (i=0; i < responseJson?.length; i++) {
     if (!responseJson[i]){
       continue;
