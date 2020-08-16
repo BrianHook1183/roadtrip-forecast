@@ -1,4 +1,5 @@
 //  ::::::::Critical TO DOs for submission::::::::::
+// geoforwarding error from unfound city still gets added to itinerary, need to exit before that happens. 
 // add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClcimaCell offers anything first
 // make forecast display more palatable in general
 
@@ -17,7 +18,7 @@
 // ClimaCell's API is inconsistent with returning the requested date range, these variables will adjust the user inputted dates in the background for the fetch.
 // startDate can not be adjusted more than endDate or else for a 1 day forecast you will have an invalid call to the API. checkAdjustments(); will fix this automatically
 let adjustStartDate = 2;
-let adjustEndDate = 1;
+let adjustEndDate = 0;
 // OpenCgeData api key
 const apiKeyCage = 'a4e6cc64bbe749ca8ec7aed6282a3091';
 // ClimaCell api key
@@ -187,7 +188,7 @@ function displayItinerary() {
     $('.js-itinerary').append(`
     <div class="itinerary-object">  
       <button class="js-delete" id="${z}">X</button>
-      <h3>${city.itDesc}</h3>
+      <h4>${city.itDesc}</h4>
       <p>Arrive: <strong>${city.itStartMonth}/${city.itStartDay}</strong> Depart:<strong> ${city.itEndMonth}/${city.itEndDay}</strong></p>
     </div>
     `);
