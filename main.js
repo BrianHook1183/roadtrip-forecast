@@ -7,6 +7,7 @@
 // make the transition between itinerary and forecast with a slide animation https://codeconvey.com/css-transition-slide-down-slide-up/
 // most buttons should stay fixed to viewport so they are always accessible
 // link to local events w/ eventful API
+// I commented out all date adjustment functionality and removed date range from API call for now. Full 14 day forecast is being fetched for each city, and the displayForecast filters out uneeded days.
 
 // ::::BUGS:::::
 // if you enter just a state name, the slice for a clean location on itinerary display still had Unite States of America
@@ -17,8 +18,8 @@
 // ****Global Variables*****
 // ClimaCell's API is inconsistent with returning the requested date range, these variables will adjust the user inputted dates in the background for the fetch.
 // startDate can not be adjusted more than endDate or else for a 1 day forecast you will have an invalid call to the API. checkAdjustments(); will fix this automatically
-let adjustStartDate = 2;
-let adjustEndDate = 0;
+// let adjustStartDate = 0;
+// let adjustEndDate = 0;
 // OpenCgeData api key
 const apiKeyCage = 'a4e6cc64bbe749ca8ec7aed6282a3091';
 // ClimaCell api key
@@ -66,27 +67,27 @@ function handleForm() {
     e.preventDefault();
     const cageCity = $('#js-city').val();
     const cageCityEncoded = encodeURIComponent(cageCity);
-    checkAdjustments();
+    // checkAdjustments();
     const startDate = $('#js-arr-date').val();
       const startYear = startDate.slice(0, 4);
       const startMonth = startDate.slice(5, 7);
       const startDay = startDate.slice(8, 10);
-    const startDateAdj = new Date(startYear, startMonth-1, startDay).addDays(adjustStartDate).toDateInputValue();
+    // const startDateAdj = new Date(startYear, startMonth-1, startDay).addDays(adjustStartDate).toDateInputValue();
     const endDate = $('#js-dep-date').val();
       const endYear = endDate.slice(0, 4);
       const endMonth = endDate.slice(5, 7);
       const endDay = endDate.slice(8, 10);
-    const endDateAdj = new Date(endYear, endMonth-1, endDay).addDays(adjustEndDate).toDateInputValue();
-    console.log('startDate: ' + startDate + ' adjusted: ' + startDateAdj + ' endDate: ' + endDate + ' adjusted: ' + endDateAdj);
+    // const endDateAdj = new Date(endYear, endMonth-1, endDay).addDays(adjustEndDate).toDateInputValue();
+    // console.log('startDate: ' + startDate + ' adjusted: ' + startDateAdj + ' endDate: ' + endDate + ' adjusted: ' + endDateAdj);
     console.log('city is ' + cageCity + ' and the date range is ' + startDate + ' to ' + endDate);
     const locationObject = 
     {
       'itCity': cageCity,
       'itCityEnc': cageCityEncoded,
       'itStartDate': startDate,
-      'itStartDateAdj': startDateAdj,
+      // 'itStartDateAdj': startDateAdj,
       'itEndDate': endDate,
-      'itEndDateAdj': endDateAdj,
+      // 'itEndDateAdj': endDateAdj,
       'itStartMonth': startMonth,
       'itStartDay': startDay,
       'itEndMonth': endMonth,
@@ -107,13 +108,14 @@ function handleForm() {
   })
 }
 
-function checkAdjustments() {
-  console.log(adjustEndDate);
-  if (adjustStartDate > adjustEndDate) {
-    adjustEndDate = adjustStartDate;
-    console.log(adjustEndDate);
-  };
-}
+// removes possiblity tha the start date will be moved ahead of the end date
+// function checkAdjustments() {
+//   console.log(adjustEndDate);
+//   if (adjustStartDate > adjustEndDate) {
+//     adjustEndDate = adjustStartDate;
+//     console.log(adjustEndDate);
+//   };
+// }
 
 function clearForm() {
   $('#js-city').val('');
@@ -226,8 +228,9 @@ function populateForecastStop(itinerary) {
     return;
   }
   // .shift() is acting as a -- incrementer, if this were a loop, the base case above is the condition to stop running the loop.
+  // Temporarily removed &start_time=${item.itStartDateAdj}&end_time=${item.itEndDateAdj} from fetch because API is hisbehaving.
   item = itinerary.shift();
-  const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&start_time=${item.itStartDateAdj}&end_time=${item.itEndDateAdj}&fields=precipitation,feels_like,precipitation_probability,weather_code`;
+  const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&fields=precipitation,feels_like,precipitation_probability,weather_code`;
     console.log('the url to be fetched is: ' + climaUrl);
   fetch(climaUrl)
   .then(response => response.json())
