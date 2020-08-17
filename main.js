@@ -100,11 +100,7 @@ function handleForm() {
       'itEndMonth': endMonth,
       'itEndDay': endDay
     };
-    itinerary.push(locationObject);
-    clearForm();
-    //   loading graphic while coordinate are being retrieved
-    $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
-    handleForwardGeocoding(cageCityEncoded);
+    forwardGeocoding(locationObject);
   })
 }
 
@@ -123,9 +119,8 @@ function clearForm() {
   $('#js-dep-date').val('');
 }
 
-
-function handleForwardGeocoding(cageCityEncoded) {
-  const cageUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}&countrycode=us`;
+function forwardGeocoding(locationObject) {
+  const cageUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${locationObject.itCityEnc}&countrycode=us`;
   // console.log('the geocoding fetched url will be: ' + cageUrl);
   fetch(cageUrl)
   .then(response => {
@@ -134,27 +129,27 @@ function handleForwardGeocoding(cageCityEncoded) {
     }
     throw new Error(response.statusText);
   })
-  .then(responseJson => setCoordinates(responseJson))
+  .then(responseJson => setCoordinates(responseJson, locationObject))
   .catch(err => {
     // $('#js-error-message').text(`Something went wrong: ${err.message}`);
-    alert(`Something went wrong: ${err.message}`);
+    alert(`Invalid location: check spelling`);
   });
 }
 
-function setCoordinates(responseJson) {
+function setCoordinates(responseJson, locationObject) {
+  //   loading graphic while coordinate are being retrieved
+  $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
   //  limit=1 in endpoint ensures that [0] is the only "results" to access
   const cageDescription = responseJson.results[0].formatted;
   const cageLat = responseJson.results[0].geometry.lat;
   const cageLng = responseJson.results[0].geometry.lng;
   // console.log(cageDescription + ' coordinates are: ' + cageLat + ', ' + cageLng);
-  // console.log('the itinerary array from inside setCoordinates is: ');
-  // push geocoded coordinates into location object
-  //  the variable z acts as -- incrementer and id for each city/stop to delete
-  const z = itinerary.length-1;
   // removes ", United States of America" from each returned location
-  itinerary[z].itDesc= cageDescription.split(",", 2);
-  itinerary[z].itLat= cageLat;
-  itinerary[z].itLng= cageLng;
+  locationObject.itDesc= cageDescription.split(",", 2);
+  locationObject.itLat= cageLat;
+  locationObject.itLng= cageLng;
+  // push final form of locationObject into the global itinerary
+  itinerary.push(locationObject);
   displayItinerary();
 }
 
@@ -180,6 +175,7 @@ function displayItinerary() {
   $('.js-intinerary-title').removeClass('blur');
   // reveal forecast buton
   $('.js-fetch').removeClass('hide');
+  clearForm();
 }
 
 function resetItinerary() {
