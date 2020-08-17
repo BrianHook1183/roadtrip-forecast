@@ -63,6 +63,9 @@ function insertDateLimits() {
 }
 
 function handleForm() {
+  $('#js-reset').click(e => {
+    resetItinerary();
+  })
   $('.js-submit').click(e => {
     e.preventDefault();
     const cageCity = $('#js-city').val();
@@ -79,7 +82,11 @@ function handleForm() {
       const endDay = endDate.slice(8, 10);
     // const endDateAdj = new Date(endYear, endMonth-1, endDay).addDays(adjustEndDate).toDateInputValue();
     // console.log('startDate: ' + startDate + ' adjusted: ' + startDateAdj + ' endDate: ' + endDate + ' adjusted: ' + endDateAdj);
-    console.log('city is ' + cageCity + ' and the date range is ' + startDate + ' to ' + endDate);
+    // Prevents from going any further if a required form input is missing
+    if (!cageCity || !startDate || !endDate){
+      alert("Missing required field!!");
+      return;
+    }
     const locationObject = 
     {
       'itCity': cageCity,
@@ -93,18 +100,11 @@ function handleForm() {
       'itEndMonth': endMonth,
       'itEndDay': endDay
     };
-    if (!cageCity || !startDate || !endDate){
-      alert("Missing required field!!");
-      return;
-    }
     itinerary.push(locationObject);
     clearForm();
     //   loading graphic while coordinate are being retrieved
     $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
     handleForwardGeocoding(cageCityEncoded);
-  })
-  $('#js-reset').click(e => {
-    resetItinerary();
   })
 }
 
