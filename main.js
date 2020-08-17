@@ -1,5 +1,4 @@
 //  ::::::::Critical TO DOs for submission::::::::::
-// geoforwarding error from unfound city still gets added to itinerary, need to exit before that happens. 
 // add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClcimaCell offers anything first
 // make forecast display more palatable in general
 
@@ -7,15 +6,16 @@
 // make the transition between itinerary and forecast with a slide animation https://codeconvey.com/css-transition-slide-down-slide-up/
 // most buttons should stay fixed to viewport so they are always accessible
 // link to local events w/ eventful API
-// I commented out all date adjustment functionality and removed date range from API call for now. Full 14 day forecast is being fetched for each city, and the displayForecast filters out uneeded days.
+// I commented out all date adjustment functionality and removed date range from API call for now. Full 14 day forecast is being fetched for each city, and the displayForecast filters out uneeded days. Would be nice to bring back the limits if i can.
 
 // ::::BUGS:::::
-// if you enter just a state name, the slice for a clean location on itinerary display still had Unite States of America
+
 
 
 
 
 // ****Global Variables*****
+
 // ClimaCell's API is inconsistent with returning the requested date range, these variables will adjust the user inputted dates in the background for the fetch.
 // startDate can not be adjusted more than endDate or else for a 1 day forecast you will have an invalid call to the API. checkAdjustments(); will fix this automatically
 // let adjustStartDate = 0;
@@ -72,14 +72,14 @@ function handleForm() {
     const cageCityEncoded = encodeURIComponent(cageCity);
     // checkAdjustments();
     const startDate = $('#js-arr-date').val();
-      // const startYear = startDate.slice(0, 4);
-      const startMonth = startDate.slice(5, 7);
-      const startDay = startDate.slice(8, 10);
+    // const startYear = startDate.slice(0, 4);
+    const startMonth = startDate.slice(5, 7);
+    const startDay = startDate.slice(8, 10);
     // const startDateAdj = new Date(startYear, startMonth-1, startDay).addDays(adjustStartDate).toDateInputValue();
     const endDate = $('#js-dep-date').val();
-      // const endYear = endDate.slice(0, 4);
-      const endMonth = endDate.slice(5, 7);
-      const endDay = endDate.slice(8, 10);
+    // const endYear = endDate.slice(0, 4);
+    const endMonth = endDate.slice(5, 7);
+    const endDay = endDate.slice(8, 10);
     // const endDateAdj = new Date(endYear, endMonth-1, endDay).addDays(adjustEndDate).toDateInputValue();
     // console.log('startDate: ' + startDate + ' adjusted: ' + startDateAdj + ' endDate: ' + endDate + ' adjusted: ' + endDateAdj);
     // Prevents from going any further if a required form input is missing
@@ -87,6 +87,8 @@ function handleForm() {
       alert("Missing required field!!");
       return;
     }
+    //   loading graphic while coordinate are being retrieved
+    $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
     const locationObject = 
     {
       'itCity': cageCity,
@@ -133,12 +135,11 @@ function forwardGeocoding(locationObject) {
   .catch(err => {
     // $('#js-error-message').text(`Something went wrong: ${err.message}`);
     alert(`Invalid location: check spelling`);
+    // hides loading graphic while user fixes location input
   });
 }
 
 function setCoordinates(responseJson, locationObject) {
-  //   loading graphic while coordinate are being retrieved
-  $('.js-itinerary').html('<div id="js-loading1"><p>loading...</p><img src="assets/loading.svg"></div>');
   //  limit=1 in endpoint ensures that [0] is the only "results" to access
   const cageDescription = responseJson.results[0].formatted;
   const cageLat = responseJson.results[0].geometry.lat;
