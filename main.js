@@ -37,7 +37,7 @@ Date.prototype.toDateInputValue = (function() {
   return date.toJSON().slice(0,10);
 });
 // ClimaCell api is limited to 14 day forecast. to restrict error, date picker limit is also set to 14 days from now. To change, modify value in addDays function
-let today14 = new Date().addDays(14).toDateInputValue();
+let today14 = new Date().addDays(13).toDateInputValue();
 let today = new Date().toDateInputValue();
 
 
