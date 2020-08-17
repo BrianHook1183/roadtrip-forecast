@@ -23,14 +23,6 @@ section {
   background-repeat: no-repeat; 
   background-size: cover; 
 }
-.forecast {
-  background-image: url("assets/clouds-light.jpg"); 
-  background-color: #e6f5ff; 
-  height: 100px; 
-  /* background-position: center;  */
-  background-repeat: no-repeat; 
-  background-size: cover; 
-}
 
 header, footer, h1, h2, h3 {
   text-align: center;
@@ -162,15 +154,35 @@ h4 {
   margin: 4px 0px 0px 0px;
 }
 
+.forecast {
+  background-image: url("assets/clouds-light.jpg"); 
+  background-color: #e6f5ff; 
+  height: 100px; 
+  /* background-position: center;  */
+  background-repeat: no-repeat; 
+  background-size: cover; 
+}
+
 .forecast-pair {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  border: 1px grey solid;
+  align-items: center;
+  /* border: 1px grey solid; */
   border-radius: 20px;
   margin-bottom: 8px;
-  align-items: center;
+  height: 175px;
 }
+@media only screen and (max-width: 600px) {
+  .forecast-pair {
+    flex-direction: column-reverse;
+    height: auto;
+    border: none;
+  }
+}
+
+
+
 .forecast-text {
   /* border: 1px blue solid; */
   padding-right: 25px;
@@ -180,10 +192,17 @@ h4 {
 }
 .forecast-picture {
   /* border: 1px red solid; */
-  
+  flex-shrink: 1;
+  height: 100%;
+  margin: 8px 0px;
+}
+@media only screen and (max-width: 600px) {
+  .forecast-picture {
+    height: 125px;
+  }
 }
 .forecast-picture img {
-  height: 125px;
+  height: 100%;
   opacity: .6;
   border-radius: 20px;
 }
