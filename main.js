@@ -69,12 +69,12 @@ function handleForm() {
     const cageCityEncoded = encodeURIComponent(cageCity);
     // checkAdjustments();
     const startDate = $('#js-arr-date').val();
-      const startYear = startDate.slice(0, 4);
+      // const startYear = startDate.slice(0, 4);
       const startMonth = startDate.slice(5, 7);
       const startDay = startDate.slice(8, 10);
     // const startDateAdj = new Date(startYear, startMonth-1, startDay).addDays(adjustStartDate).toDateInputValue();
     const endDate = $('#js-dep-date').val();
-      const endYear = endDate.slice(0, 4);
+      // const endYear = endDate.slice(0, 4);
       const endMonth = endDate.slice(5, 7);
       const endDay = endDate.slice(8, 10);
     // const endDateAdj = new Date(endYear, endMonth-1, endDay).addDays(adjustEndDate).toDateInputValue();
@@ -123,27 +123,6 @@ function clearForm() {
   $('#js-dep-date').val('');
 }
 
-function resetItinerary() {
-  itinerary = [];
-  displayItinerary();
-  $('.js-fetch').addClass('hide');
-  $('.js-intinerary-title').addClass('blur');
-}
-
-function handleItinerary() {
-  $('.js-itinerary').on('click', '.js-delete' , e => {
-    console.log(itinerary);
-    deleteItineraryItem(e.target.id);
-  })
-}
-
-function deleteItineraryItem(buttonId) {
-  console.log('deleteItineraryItem was clicked for button id: ' + buttonId);
-  // TO DO: figure out a way to bind each delete button with the index value that it holds in the itinerary array
-  itinerary.splice(buttonId, 1);
-  displayItinerary();
-  console.log(itinerary);
-}
 
 function handleForwardGeocoding(cageCityEncoded) {
   const cageUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKeyCage}&no_annotations=1&limit=1&q=${cageCityEncoded}&countrycode=us`;
@@ -189,9 +168,9 @@ function displayItinerary() {
   itinerary.forEach((city, z) => {
     $('.js-itinerary').append(`
     <div class="itinerary-object">  
-      <button class="js-delete" id="${z}">X</button>
-      <h4>${city.itDesc}</h4>
-      <p>Arrive: <strong>${city.itStartMonth}/${city.itStartDay}</strong> Depart:<strong> ${city.itEndMonth}/${city.itEndDay}</strong></p>
+    <button class="js-delete" id="${z}">X</button>
+    <h4>${city.itDesc}</h4>
+    <p>Arrive: <strong>${city.itStartMonth}/${city.itStartDay}</strong> Depart:<strong> ${city.itEndMonth}/${city.itEndDay}</strong></p>
     </div>
     `);
   });
@@ -201,6 +180,28 @@ function displayItinerary() {
   $('.js-intinerary-title').removeClass('blur');
   // reveal forecast buton
   $('.js-fetch').removeClass('hide');
+}
+
+function resetItinerary() {
+  itinerary = [];
+  displayItinerary();
+  $('.js-fetch').addClass('hide');
+  $('.js-intinerary-title').addClass('blur');
+}
+
+function handleItinerary() {
+  $('.js-itinerary').on('click', '.js-delete' , e => {
+    console.log(itinerary);
+    deleteItineraryItem(e.target.id);
+  })
+}
+
+function deleteItineraryItem(buttonId) {
+  console.log('deleteItineraryItem was clicked for button id: ' + buttonId);
+  // TO DO: figure out a way to bind each delete button with the index value that it holds in the itinerary array
+  itinerary.splice(buttonId, 1);
+  displayItinerary();
+  console.log(itinerary);
 }
 
 function handleForecasts() {
