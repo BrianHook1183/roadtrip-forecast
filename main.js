@@ -255,7 +255,7 @@ function displayForecast(responseJson, itDesc, itStartDate, itEndDate) {
         const betterWeatherCode = uglyWeatherCode.replace("_", " ");
         // credit to https://attacomsian.com/blog/string-capitalize-javascript
         const prettyWeatherCode = betterWeatherCode.replace(/\b\w/g, c => c.toUpperCase());
-      $('.js-results').append('<ul><li><strong>' + itDesc + '</strong> on <strong>' + responseJson[i].observation_time.value + '</strong></li><ul><li>Overview: <strong>' + prettyWeatherCode + '</strong></li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></ul>');
+      $('.js-results').append('<div class="forecast-pair"><div class="forecast-text"><h3>' + itDesc + ' on ' + responseJson[i].observation_time.value + '</h3><ul><li>Overview: <strong>' + prettyWeatherCode + '</strong></li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></div><div class="forecast-picture"><img src="assets/sample.jpg"></div></div>');
     };
   }
   // Hide loading graphic after forecast has displayed

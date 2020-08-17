@@ -18,14 +18,19 @@ section {
 .setup {
   background-image: url("assets/map.jpg"); 
   background-color: #ffffff; 
-  height: 500px; 
+  height: 550px; 
   background-position: center; 
   background-repeat: no-repeat; 
   background-size: cover; 
 }
-/* .forecast {
-  border: 1px solid black;
-} */
+.forecast {
+  background-image: url("assets/clouds-light.jpg"); 
+  background-color: #e6f5ff; 
+  height: 100px; 
+  /* background-position: center;  */
+  background-repeat: no-repeat; 
+  background-size: cover; 
+}
 
 header, footer, h1, h2, h3 {
   text-align: center;
@@ -113,7 +118,7 @@ input[type="date"] {
 }
 
 .space-between {
-  justify-content: space-between ;
+  justify-content: space-between;
 }
 .blur {
   color: transparent;
@@ -155,6 +160,30 @@ h3 {
 }
 h4 {
   margin: 4px 0px 0px 0px;
+}
+
+.forecast-pair {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border: 1px grey solid;
+  border-radius: 20px;;
+  margin-bottom: 8px;
+  align-items: center;
+}
+.forecast-text {
+  /* border: 1px blue solid; */
+  padding-right: 8px;
+}
+.forecast-text ul {
+  /* padding-left: 0px; */
+}
+.forecast-picture {
+  /* border: 1px red solid; */
+}
+.forecast-picture img {
+  height: 125px;
+  opacity: .6;
 }
 
 .attribution {
