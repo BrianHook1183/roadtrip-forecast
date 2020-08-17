@@ -167,23 +167,25 @@ h4 {
   flex-direction: row;
   justify-content: center;
   border: 1px grey solid;
-  border-radius: 20px;;
+  border-radius: 20px;
   margin-bottom: 8px;
   align-items: center;
 }
 .forecast-text {
   /* border: 1px blue solid; */
-  padding-right: 8px;
+  padding-right: 25px;
 }
 .forecast-text ul {
   /* padding-left: 0px; */
 }
 .forecast-picture {
   /* border: 1px red solid; */
+  
 }
 .forecast-picture img {
   height: 125px;
   opacity: .6;
+  border-radius: 20px;
 }
 
 .attribution {
