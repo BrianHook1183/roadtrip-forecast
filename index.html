@@ -16,7 +16,7 @@
 		<main>
 
       <section class="start flex column">
-        <p>On the next page you will be able to add a road trip/ vacation itinerary. The main utility of this app is to see a forecast across multiple cities and date ranges in a single view, instead of needing to chack multiple extended forecasts for each city yourself.</p>
+        <p>On the next page you will be able to add a road trip/ vacation itinerary. The main utility of this app is to see a forecast across multiple cities and date ranges in a single view, instead of needing to check multiple extended forecasts for each city one by one.</p>
         <p>This app was created with HTML, CSS, Javascript, and JQUERY</p>
         <p>APIs used:
           <ul>
@@ -24,25 +24,25 @@
             <li>CimaCell for the forecasts</li>
           </ul>
         </p>
-        <button class= "nav-button" id="js-start">Create Your Itinerary</button>
+        <button class= "nav-button" id="js-start">Create New Itinerary</button>
       </section>
 
       <section class="setup hide flex column">
         <h2>Add a Stop</h2>
         <form>
-          <h3>Where?</h3>
-          <label>location: <input type="text" id="js-city" placeholder="Springfield, MA">
+          <h3>Location</h3>
+          <label><input type="text" id="js-city" placeholder="Springfield, MA">
           </label><br>
-          <h3>When?</h3>
-          <label>Arrival Date: <input type="Date" id="js-arr-date">
+          <h3>Arrive / Depart</h3>
+          <label><input type="Date" id="js-arr-date">
           </label>
-          <label>Departure Date: <input type="date" id="js-dep-date">
+          <label><input type="date" id="js-dep-date">
           </label><br>
           <div class="flex row space-between">
             <input class="js-submit" type="submit" value="add to itinerary">
-            <input id="js-reset" type="reset" value="clear itinerary">
           </div>
         </form>
+        <button class="reset" id="js-reset" type="reset">clear all</button>
         <h2 class="js-intinerary-title blur">Itinerary</h2>
         <div class="js-itinerary flex column">
         </div>

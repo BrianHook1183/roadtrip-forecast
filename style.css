@@ -2,6 +2,8 @@ body {
   padding: 8px;
   max-width: 700px;
   margin: auto;
+  /* border: 1px solid black;
+  border-radius: 50px; */
 }
 
 /* sections */
@@ -12,11 +14,16 @@ section {
 /* borders on sections for development purposes */
 /* .start {
   border: 1px solid black;
-}
+} */
 .setup {
-  border: 1px solid black;
+  background-image: url("/assets/map.jpg"); 
+  background-color: #ffffff; 
+  height: 500px; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: cover; 
 }
-.forecast {
+/* .forecast {
   border: 1px solid black;
 } */
 
@@ -25,7 +32,7 @@ header, footer, h1, h2, h3 {
 }
 
 h1 {
-  color: rgb(180, 180, 180);
+  color: rgb(100, 100, 100);
   font-size: 26px
 }
 
@@ -66,19 +73,22 @@ footer {
 form {
   display: flex;
   flex-direction: column;
+  align-items: center;
   border: 3px solid grey;
   padding: 25px;
   margin: auto;
+  margin-bottom: 8px;
   background-color: rgb(240, 240, 240);
 }
 label {
   font-weight: bold;
 }
-input[type="reset"] {
+.reset {
   background-color: darkred;
   color: white;
   font-weight: bold;
   padding: 4px;
+  margin: auto;
 }
 .js-submit {
   background-color: rgb(197, 248, 197);
@@ -110,19 +120,39 @@ input[type="date"] {
 .js-itinerary {
   margin: auto;
 }
+
+.js-intinerary-title {
+  margin-top: 50px;
+}
+
 .itinerary-object {
   border: 1px grey solid;
-  padding: 4px 12px 4px 4px;
+  padding: 8px 12px 8px 12px;
   margin-bottom: 1px;
+  border-radius: 8px;
+  /* min-width: 250px; */
 }
-.js-delete {
+.stop-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.stop-duration {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 12px;
+}
+
+.x {
   background-color: lightpink;
+  margin-right: 12px;
 }
 h3 {
   margin: 8px 0px;
 }
 h4 {
-  margin: 8 0 0 0;
+  margin: 4px 0px 0px 0px;
 }
 
 

@@ -1,5 +1,5 @@
 //  ::::::::Critical TO DOs for submission::::::::::
-// add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClcimaCell offers anything first
+// add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClimaCell offers anything first
 // make forecast display more palatable in general
 
 //:::: "Would be nice" TO DOs for submission:::::
@@ -163,10 +163,14 @@ function displayItinerary() {
   $('.js-itinerary').html('');
   itinerary.forEach((city, z) => {
     $('.js-itinerary').append(`
-    <div class="itinerary-object">  
-    <button class="js-delete" id="${z}">X</button>
-    <h4>${city.itDesc}</h4>
-    <p>Arrive: <strong>${city.itStartMonth}/${city.itStartDay}</strong> Depart:<strong> ${city.itEndMonth}/${city.itEndDay}</strong></p>
+    <div class="itinerary-object">
+      <div class="stop-header">
+        <button class="js-delete x" id="${z}">X</button>
+        <h4>${city.itDesc}</h4>
+      </div>
+      <div class="stop-duration">
+        <span><strong>${city.itStartMonth}/${city.itStartDay}</strong>:Arrive -</span><span>- Depart: <strong> ${city.itEndMonth}/${city.itEndDay}</strong></span>
+      </div>
     </div>
     `);
   });
