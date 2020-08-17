@@ -155,7 +155,12 @@ h4 {
   margin: 4px 0px 0px 0px;
 }
 
-
+.attribution {
+  text-align: center;
+  font-size: 12px;
+  margin-top: -12px;
+  letter-spacing: 2px;
+}
 
 
 

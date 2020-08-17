@@ -1,6 +1,7 @@
 //  ::::::::Critical TO DOs for submission::::::::::
 // add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClimaCell offers anything first
 // make forecast display more palatable in general
+//  freezing_rain_heavy, freezing_rain, freezing_rain_light, freezing_drizzle, ice_pellets_heavy, ice_pellets, ice_pellets_light, snow_heavy, snow, snow_light, flurries, tstorm, rain_heavy, rain, rain_light, drizzle, fog_light, fog, cloudy, mostly_cloudy, partly_cloudy, mostly_clear, clear
 
 //:::: "Would be nice" TO DOs for submission:::::
 // make the transition between itinerary and forecast with a slide animation https://codeconvey.com/css-transition-slide-down-slide-up/
@@ -37,7 +38,7 @@ Date.prototype.toDateInputValue = (function() {
   return date.toJSON().slice(0,10);
 });
 // ClimaCell api is limited to 14 day forecast. to restrict error, date picker limit is also set to 14 days from now. To change, modify value in addDays function
-let today14 = new Date().addDays(13).toDateInputValue();
+let today14 = new Date().addDays(14).toDateInputValue();
 let today = new Date().toDateInputValue();
 
 
@@ -232,7 +233,7 @@ function populateForecastStop(itinerary) {
   // .shift() is acting as a -- incrementer, if this were a loop, the base case above is the condition to stop running the loop.
   // Temporarily removed &start_time=${item.itStartDateAdj}&end_time=${item.itEndDateAdj} from fetch because API is hisbehaving.
   item = itinerary.shift();
-  const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&unit_system=us&fields=precipitation,feels_like,precipitation_probability,weather_code`;
+  const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&start_time=now&unit_system=us&fields=precipitation,feels_like,precipitation_probability,weather_code`;
     console.log('the url to be fetched is: ' + climaUrl);
   fetch(climaUrl)
   .then(response => response.json())
