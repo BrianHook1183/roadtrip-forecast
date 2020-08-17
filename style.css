@@ -16,7 +16,7 @@ section {
   border: 1px solid black;
 } */
 .setup {
-  background-image: url("/assets/map.jpg"); 
+  background-image: url("assets/map.jpg"); 
   background-color: #ffffff; 
   height: 500px; 
   background-position: center; 
