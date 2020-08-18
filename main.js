@@ -1,16 +1,3 @@
-//:::: "Would be nice" TO DOs for submission:::::
-//  hover city/date over forecast picture https://www.w3schools.com/css/tryit.asp?filename=trycss_image_text_center2
-// make the transition between itinerary and forecast with a slide animation https://codeconvey.com/css-transition-slide-down-slide-up/
-// most buttons should stay fixed to viewport so they are always accessible
-// link to local events w/ eventful API
-// I commented out all date adjustment functionality and removed date range from API call for now. Full 14 day forecast is being fetched for each city, and the displayForecast filters out uneeded days. Would be nice to bring back the limits if i can.
-
-// ::::BUGS:::::
-
-
-
-
-
 // ****Global Variables*****
 
 // ClimaCell's API is inconsistent with returning the requested date range, these variables will adjust the user inputted dates in the background for the fetch.
