@@ -94,9 +94,9 @@ form h3 {
   font-weight: bold;
   padding: 4px;
 }
-input[type="date"] {
+/* input[type="date"] {
   margin-bottom: 4px;
-}
+} */
 
 /* Flex box */
 .flex {
@@ -180,15 +180,9 @@ h4 {
     border: none;
   }
 }
-
-
-
 .forecast-text {
   /* border: 1px blue solid; */
   padding-right: 25px;
-}
-.forecast-text ul {
-  /* padding-left: 0px; */
 }
 .forecast-picture {
   /* border: 1px red solid; */

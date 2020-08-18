@@ -1,13 +1,8 @@
-//  ::::::::Critical TO DOs for submission::::::::::
-// add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClimaCell offers anything first
-// make forecast display more palatable in general
-//  freezing_rain_heavy, freezing_rain, freezing_rain_light, freezing_drizzle, ice_pellets_heavy, ice_pellets, ice_pellets_light, snow_heavy, snow, snow_light, flurries, tstorm, rain_heavy, rain, rain_light, drizzle, fog_light, fog, cloudy, mostly_cloudy, partly_cloudy, mostly_clear, clear
-
 //:::: "Would be nice" TO DOs for submission:::::
 // make the transition between itinerary and forecast with a slide animation https://codeconvey.com/css-transition-slide-down-slide-up/
 // most buttons should stay fixed to viewport so they are always accessible
 // link to local events w/ eventful API
-// I commented out all date adjustment functionality and removed date range from API call for now. Full 14 day forecast is being fetched for each city, and the displayForecast filters out uneeded days. Would be nice to bring back the limits if i can.
+
 
 // ::::BUGS:::::
 
@@ -156,30 +151,27 @@ Date.prototype.toDateInputValue = (function() {
   return date.toJSON().slice(0,10);
 });
 // ClimaCell api is limited to 14 day forecast. to restrict error, date picker limit is also set to 14 days from now. To change, modify value in addDays function
-let today14 = new Date().addDays(14).toDateInputValue();
-let today = new Date().toDateInputValue();
-
-
+// let today14 = new Date().addDays(14).toDateInputValue();
+// let today = new Date().toDateInputValue();
 
 function handleStart() {
   $('#js-start').click( e => {
     // navigation button
     $('.start').addClass('hide');
-    insertDateLimits();
     $('.setup').removeClass('hide');
   })
 }
 
-function insertDateLimits() {
-  $('input[type="date"]').attr('min', today);
-  $('input[type="date"]').attr('max', today14);
-  // sets the datepicker display for minimum date for departure to be >= than arrival date. 
-  $('#js-dep-date').click( e => {
-    const  activeArrivalDate = $('#js-arr-date').val();
-    // console.log('js-dep-date clicked and the activeArrivalDate is: ' + activeArrivalDate);
-    $('#js-dep-date').attr('min', activeArrivalDate);
-  });
-}
+// function insertDateLimits() {
+//   $('input[class="datepicker"]').attr('min', today);
+//   $('input[class="datepicker"]').attr('max', today14);
+//   // sets the datepicker display for minimum date for departure to be >= than arrival date. 
+//   $('#js-dep-date').click( e => {
+//     const  activeArrivalDate = $('#js-arr-date').val();
+//     console.log('js-dep-date clicked and the activeArrivalDate is: ' + activeArrivalDate);
+//     $('#js-dep-date').attr('min', activeArrivalDate);
+//   });
+// }
 
 function handleForm() {
   $('#js-reset').click(e => {
