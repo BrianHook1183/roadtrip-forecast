@@ -1,8 +1,3 @@
-//  ::::::::Critical TO DOs for submission::::::::::
-// add weather pictures. forecast objects should be text on left, picture on the right with overview interpreted into pictures. see if ClimaCell offers anything first
-// make forecast display more palatable in general
-//  freezing_rain_heavy, freezing_rain, freezing_rain_light, freezing_drizzle, ice_pellets_heavy, ice_pellets, ice_pellets_light, snow_heavy, snow, snow_light, flurries, tstorm, rain_heavy, rain, rain_light, drizzle, fog_light, fog, cloudy, mostly_cloudy, partly_cloudy, mostly_clear, clear
-
 //:::: "Would be nice" TO DOs for submission:::::
 // make the transition between itinerary and forecast with a slide animation https://codeconvey.com/css-transition-slide-down-slide-up/
 // most buttons should stay fixed to viewport so they are always accessible

@@ -11,10 +11,7 @@ section {
   margin: 8px;
   padding: 8px;
 }
-/* borders on sections for development purposes */
-/* .start {
-  border: 1px solid black;
-} */
+
 .setup {
   background-image: url("assets/map.jpg"); 
   background-color: #ffffff; 
@@ -187,9 +184,6 @@ h4 {
 .forecast-text {
   /* border: 1px blue solid; */
   padding-right: 25px;
-}
-.forecast-text ul {
-  /* padding-left: 0px; */
 }
 .forecast-picture {
   /* border: 1px red solid; */
