@@ -2,8 +2,6 @@ body {
   padding: 8px;
   max-width: 700px;
   margin: auto;
-  /* border: 1px solid black;
-  border-radius: 50px; */
 }
 
 /* sections */
@@ -47,7 +45,6 @@ h1 {
   width: 326px;
   margin: auto;
 }
-
 .js-fetch {
   margin-top: 8px;
   margin-bottom: 20px;
@@ -132,7 +129,6 @@ input[type="date"] {
   padding: 8px 12px 8px 12px;
   margin-bottom: 1px;
   border-radius: 8px;
-  /* min-width: 250px; */
 }
 .stop-header {
   display: flex;
@@ -161,7 +157,6 @@ h4 {
   background-image: url("assets/clouds-light.jpg"); 
   background-color: #e6f5ff; 
   height: 100px; 
-  /* background-position: center;  */
   background-repeat: no-repeat; 
   background-size: cover; 
 }
@@ -171,7 +166,6 @@ h4 {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  /* border: 1px grey solid; */
   border-radius: 20px;
   margin-bottom: 8px;
   height: 175px;
@@ -192,11 +186,9 @@ h4 {
 
 
 .forecast-text {
-  /* border: 1px blue solid; */
   padding-right: 25px;
 }
 .forecast-picture {
-  /* border: 1px red solid; */
   flex-shrink: 1;
   height: 100%;
   margin: 8px 0px;
@@ -219,7 +211,6 @@ h4 {
   margin-top: -12px;
   letter-spacing: 2px;
 }
-
 
 
 .hide {
