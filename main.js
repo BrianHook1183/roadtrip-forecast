@@ -382,7 +382,7 @@ function displayForecast(responseJson, itDesc, itStartDate, itEndDate) {
       const weatherText = weatherObject.codePretty;
       const weatherImageAlt = weatherObject.codePretty;
       // adds completed forecast for each day into the displayed forecast
-      $('.js-results').append('<div class="forecast-pair"><div class="forecast-text"><h3>' + itDesc + '<br>' + responseJson[i].observation_time.value.slice(5, 10) + '</h3><ul><li>Overview: <strong>' + weatherText + '</strong></li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></div><div class="forecast-picture"><img src="assets/' + weatherImage + '" alt="' + weatherImageAlt + '"></div></div><hr>');
+      $('.js-results').append('<div class="forecast-pair"><div class="forecast-text"><ul><li>Overview: <strong>' + weatherText + '</strong></li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></div><div class="forecast-picture"><img src="assets/' + weatherImage + '" alt="' + weatherImageAlt + '"><div class="hover-text"><h3>' + itDesc + '<br>' + responseJson[i].observation_time.value.slice(5, 10) + '</h3></div></div></div><hr>');
     };
   }
   // Hide loading graphic after forecast has displayed
