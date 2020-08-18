@@ -32,6 +32,6 @@ This app was created with HTML, CSS, Javascript, and JQUERY
 
 ### APIs used
 
-Open Cage for the location input to coordinates conversion.
+OpenCage for the location input to coordinates conversion.
 
 CimaCell which uses corrdinates for weather forecasts.
