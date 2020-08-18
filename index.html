@@ -6,11 +6,7 @@
 		<title>Road Trip Forecast Planner</title>
 		<meta name="description" content="">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
-    <link rel="stylesheet" type="text/css" href="style.css">
-    
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
 		<header>
@@ -37,11 +33,10 @@
           <h3>Location</h3>
           <label><input type="text" id="js-city" placeholder="City, State">
           </label><br>
-          <h3>Arrive</h3>
-          <label><input type="text" class="datepicker" id="js-arr-date">
+          <h3>Arrive / Depart</h3>
+          <label><input type="Date" id="js-arr-date">
           </label>
-          <h3>Depart</h3>
-          <label><input type="text" class="datepicker" id="js-dep-date">
+          <label><input type="date" id="js-dep-date">
           </label><br>
           <input class="js-submit" type="submit" value="add to itinerary">
         </form>
