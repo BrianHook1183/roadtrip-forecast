@@ -238,6 +238,7 @@ function forwardGeocoding(locationObject) {
     // $('#js-error-message').text(`Something went wrong: ${err.message}`);
     alert(`Invalid location: check spelling`);
     // hides loading graphic while user fixes location input
+    $('#js-loading1').addClass('hide');
   });
 }
 
