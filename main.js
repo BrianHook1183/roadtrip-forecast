@@ -1,4 +1,5 @@
 //:::: "Would be nice" TO DOs for submission:::::
+//  hover city/date over forecast picture https://www.w3schools.com/css/tryit.asp?filename=trycss_image_text_center2
 // make the transition between itinerary and forecast with a slide animation https://codeconvey.com/css-transition-slide-down-slide-up/
 // most buttons should stay fixed to viewport so they are always accessible
 // link to local events w/ eventful API
@@ -159,7 +160,7 @@ let today = new Date().toDateInputValue();
 function handleStart() {
   $('#js-start').click( e => {
     // navigation button
-    $('.start').addClass('hide');
+    $('.start').slideUp();
     insertDateLimits();
     $('.setup').removeClass('hide');
   })
@@ -323,7 +324,7 @@ function handleForecasts() {
   $('.js-fetch').click(e => {
     e.preventDefault();
       // navigation button
-    $('.setup').addClass('hide');
+    $('.setup').slideUp();
     $('.forecast').removeClass('hide');
     //  loading graphic while forecast loads
     $('.js-results').removeClass('hide').html('<div id="js-loading2"><p>loading...</p><img src="assets/loading.svg"></div>');
@@ -332,7 +333,7 @@ function handleForecasts() {
   })
   $('#js-back').click(e => {
     // navigation button
-    $('.setup').removeClass('hide');
+    $('.setup').slideDown();
     $('.forecast').addClass('hide');
   })
 }

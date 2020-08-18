@@ -11,6 +11,14 @@ section {
   margin: 8px;
   padding: 8px;
 }
+.start img {
+  opacity: .4;
+  width: 100%;
+
+}
+#js-start {
+  padding: 20px 0;
+}
 
 .setup {
   background-image: url("assets/map.jpg"); 
@@ -40,9 +48,6 @@ h1 {
   margin: auto;
 }
 
-#js-start {
-  padding: 20px 0;
-}
 .js-fetch {
   margin-top: 8px;
   margin-bottom: 20px;
