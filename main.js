@@ -25,7 +25,125 @@
 const apiKeyCage = 'a4e6cc64bbe749ca8ec7aed6282a3091';
 // ClimaCell api key
 const apiKeyClima = 'MmdzZmqejYEWZI7bKBEA2KET3QwqKJJr';
+let weatherTextImages = [
+  {
+    'code': 'freezing_rain_heavy',
+    'codePretty': 'Heavy Freezing Rain',
+    'codeImage': 'heavy-freezing-rain.jpg'
+  },
+  {
+    'code': 'freezing_rain',
+    'codePretty': 'Freezing Rain',
+    'codeImage': 'freezing-rain.jpg'
+  },
+  {
+    'code': 'freezing_rain_light',
+    'codePretty': 'Freezing Light Rain',
+    'codeImage': 'light-freezing-rain.jpg'
+  },
+  {
+    'code': 'freezing_drizzle',
+    'codePretty': 'Freezing Drizzle',
+    'codeImage': 'light-freezing-rain.jpg'
+  },
+  {
+    'code': 'snow',
+    'codePretty': 'Snow',
+    'codeImage': 'snow.jpg'
+  },
+  {
+    'code': 'snow_heavy',
+    'codePretty': 'Heavy Snow',
+    'codeImage': 'snow.jpg'
+  },
+  {
+    'code': 'snow_light',
+    'codePretty': 'Light Snow',
+    'codeImage': 'light-snow.jpg'
+  },
+  {
+    'code': 'flurries',
+    'codePretty': 'Flurries',
+    'codeImage': 'flurries.jpg'
+  },
+  {
+    'code': 'ice_pellets_heavy',
+    'codePretty': 'Heavy Ice Pellets',
+    'codeImage': 'hail.jpg'
+  },
+  {
+    'code': 'ice_pellets',
+    'codePretty': 'Ice Pellets',
+    'codeImage': 'hail.jpg'
+  },
+  {
+    'code': 'ice_pellets_light',
+    'codePretty': 'Light Ice Pellets',
+    'codeImage': 'hail.jpg'
+  },
+  {
+    'code': 'tstorm',
+    'codePretty': 'Thunderstorm',
+    'codeImage': 'tstorm.jpg'
+  },
+  {
+    'code': 'rain_heavy',
+    'codePretty': 'Heavy Rain',
+    'codeImage': 'heavy-rain.jpg'
+  },
+  {
+    'code': 'rain',
+    'codePretty': 'Rain',
+    'codeImage': 'rain.jpg'
+  },
+  {
+    'code': 'rain_light',
+    'codePretty': 'Light Rain',
+    'codeImage': 'light-rain.jpg'
+  },
+  {
+    'code': 'drizzle',
+    'codePretty': 'Drizzle',
+    'codeImage': 'light-rain.jpg'
+  },
+  {
+    'code': 'fog_light',
+    'codePretty': 'Light Fog',
+    'codeImage': 'light-fog.jpg'
+  },
+  {
+    'code': 'fog',
+    'codePretty': 'Fog',
+    'codeImage': 'fog.jpg'
+  },
+  {
+    'code': 'cloudy',
+    'codePretty': 'Cloudy',
+    'codeImage': 'cloudy.jpg'
+  },
+  {
+    'code': 'mostly_cloudy',
+    'codePretty': 'Mostly Cloudy',
+    'codeImage': 'mostly-cloudy.jpg'
+  },
+  {
+    'code': 'partly_cloudy',
+    'codePretty': 'Partly Cloudy',
+    'codeImage': 'partly-cloudy.jpg'
+  },
+  {
+    'code': 'clear',
+    'codePretty': 'Clear',
+    'codeImage': 'clear.jpg'
+  },
+  {
+    'code': 'mostly_clear',
+    'codePretty': 'Mostly Clear',
+    'codeImage': 'mostly-clear.jpg'
+  }
+];
 let itinerary = [];
+
 // Dates
 Date.prototype.addDays = function(days) {
   var date = new Date(this.valueOf());
@@ -58,7 +176,7 @@ function insertDateLimits() {
   // sets the datepicker display for minimum date for departure to be >= than arrival date. 
   $('#js-dep-date').click( e => {
     const  activeArrivalDate = $('#js-arr-date').val();
-    console.log('js-dep-date clicked and the activeArrivalDate is: ' + activeArrivalDate);
+    // console.log('js-dep-date clicked and the activeArrivalDate is: ' + activeArrivalDate);
     $('#js-dep-date').attr('min', activeArrivalDate);
   });
 }
@@ -234,7 +352,7 @@ function populateForecastStop(itinerary) {
   // Temporarily removed &start_time=${item.itStartDateAdj}&end_time=${item.itEndDateAdj} from fetch because API is hisbehaving.
   item = itinerary.shift();
   const climaUrl = `https://api.climacell.co/v3/weather/forecast/daily?apikey=${apiKeyClima}&lat=${item.itLat}&lon=${item.itLng}&start_time=now&unit_system=us&fields=precipitation,feels_like,precipitation_probability,weather_code`;
-    console.log('the url to be fetched is: ' + climaUrl);
+    // console.log('the url to be fetched is: ' + climaUrl);
   fetch(climaUrl)
   .then(response => response.json())
   .then(responseJson => {
@@ -251,11 +369,22 @@ function displayForecast(responseJson, itDesc, itStartDate, itEndDate) {
     }
     // Filters out the unwanted days that are supplied by forecast API either inherently or from adjustment on user date range
     if (responseJson[i].observation_time.value >= itStartDate && responseJson[i].observation_time.value <= itEndDate){
-        const uglyWeatherCode = responseJson[i].weather_code.value;
-        const betterWeatherCode = uglyWeatherCode.replace("_", " ");
-        // credit to https://attacomsian.com/blog/string-capitalize-javascript
-        const prettyWeatherCode = betterWeatherCode.replace(/\b\w/g, c => c.toUpperCase());
-      $('.js-results').append('<div class="forecast-pair"><div class="forecast-text"><h3>' + itDesc + '<br>' + responseJson[i].observation_time.value.slice(5, 10) + '</h3><ul><li>Overview: <strong>' + prettyWeatherCode + '</strong></li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></div><div class="forecast-picture"><img src="assets/sample.jpg"></div></div><hr>');
+      const weatherCode = responseJson[i].weather_code.value;
+      // default for if there is no code match
+      let weatherObject = {'code': weatherCode,
+                          'codePretty': weatherCode.replace("_", " ").replace(/\b\w/g, c => c.toUpperCase()),
+                          'codeImage': 'unknown.png'};
+      // grabs pretty weather code and image
+      for (item of weatherTextImages) {
+        if (weatherCode === item.code){
+          weatherObject = item;
+        };
+      };
+      // overwrites default weatherObject if code match is found
+      const weatherImage = weatherObject.codeImage;
+      const weatherText = weatherObject.codePretty;
+      // adds completed forecast for each day into the displayed forecast
+      $('.js-results').append('<div class="forecast-pair"><div class="forecast-text"><h3>' + itDesc + '<br>' + responseJson[i].observation_time.value.slice(5, 10) + '</h3><ul><li>Overview: <strong>' + weatherText + '</strong></li><li>' + responseJson[i].precipitation_probability.value +  responseJson[i].precipitation_probability.units + ' chance of precipitation</li><li>"Feels Like" temperature:</li><ul><li>min: ' + responseJson[i].feels_like[0].min.value + ' &#8457;</li><li>max: ' + responseJson[i].feels_like[1].max.value + ' &#8457;</li></ul></ul></div><div class="forecast-picture"><img src="assets/' + weatherImage + '"></div></div><hr>');
     };
   }
   // Hide loading graphic after forecast has displayed
