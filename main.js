@@ -226,7 +226,6 @@ function displayItinerary() {
   itinerary.sort((a, b) => {
     return new Date(a.itEndDate) - new Date(b.itEndDate);
   });
-  console.log(itinerary);
   $('.js-itinerary').html('');
   itinerary.forEach((city, z) => {
     $('.js-itinerary').append(`
@@ -267,6 +266,10 @@ function handleItinerary() {
 }
 
 function deleteItineraryItem(buttonId) {
+  if (itinerary.length === 1) {
+    resetItinerary();
+    return;
+  }
   itinerary.splice(buttonId, 1);
   displayItinerary();
 }
