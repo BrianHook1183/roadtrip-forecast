@@ -301,11 +301,12 @@ function handleItinerary() {
 }
 
 function deleteItineraryItem(buttonId) {
-  console.log('deleteItineraryItem was clicked for button id: ' + buttonId);
-  // TO DO: figure out a way to bind each delete button with the index value that it holds in the itinerary array
+  if (itinerary.length === 1) {
+    resetItinerary();
+    return;
+  }
   itinerary.splice(buttonId, 1);
   displayItinerary();
-  console.log(itinerary);
 }
 
 function handleForecasts() {
