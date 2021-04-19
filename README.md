@@ -4,6 +4,10 @@
 
 [Live Site](https://brianhook1183.github.io/roadtrip-forecast/)
 
+## **Known Issues**
++ The city lookup / validator is not working anymore it appears - hopefully I will have time soon to take a look at it.
++ Mobile display issues with iOS (should be fine with desktops and on Android devices).
+
 ## Summary
 The main utility of this app is to see a forecast across multiple cities and date ranges in a single view, instead of needing to check multiple extended forecasts for each city one by one.
 
